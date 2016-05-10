@@ -1,0 +1,114 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/dim_5dp">
+
+    <ImageView
+        android:id="@+id/logo_imageview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/dim_50dp"
+        android:src="@drawable/logo"/>
+
+    <!--<TextView-->
+        <!--android:id="@+id/title_textview"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_below="@+id/logo_imageview"-->
+        <!--android:text="Welcome ..."-->
+        <!--android:textSize="@dimen/dim_25dp"-->
+        <!--android:layout_margin="@dimen/dim_50dp"-->
+        <!--android:textColor="@color/black" />-->
+
+    <TextView
+        android:id="@+id/user_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dim_50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/logo_imageview"
+        android:text="Username"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dim_20dp"
+        android:gravity="center_vertical" />
+
+    <EditText
+        android:id="@+id/user_edittext"
+        android:layout_width="@dimen/dim_250dp"
+        android:layout_height="@dimen/dim_50dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/logo_imageview"
+        android:hint="Username"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dim_20dp"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/psw_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dim_50dp"
+        android:layout_below="@+id/user_textview"
+        android:layout_marginTop="20dp"
+        android:text="Password"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dim_20dp"
+        android:gravity="center_vertical"/>
+
+    <EditText
+        android:id="@+id/psw_edittext"
+        android:layout_width="@dimen/dim_250dp"
+        android:layout_height="@dimen/dim_50dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/user_edittext"
+        android:layout_marginTop="@dimen/dim_20dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dim_20dp" />
+
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="@dimen/dim_180dp"
+        android:layout_height="@dimen/dim_50dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/psw_edittext"
+        android:layout_marginTop="@dimen/dim_50dp"
+        android:text="Login"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dim_15dp" />
+
+    <Button
+        android:id="@+id/reg_button"
+        android:layout_width="@dimen/dim_180dp"
+        android:layout_height="@dimen/dim_50dp"
+        android:layout_below="@+id/psw_textview"
+        android:layout_marginTop="@dimen/dim_50dp"
+        android:layout_alignParentLeft="true"
+        android:text="Register"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dim_15dp" />
+
+    <Button
+        android:id="@+id/psw_res_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim_50dp"
+        android:text="Forgot Password"
+        android:layout_below="@+id/login_button"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dim_15dp" />
+
+    <TextView
+        android:id="@+id/error_textview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dim_100dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dim_15dp"
+        android:gravity="center"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>
+
