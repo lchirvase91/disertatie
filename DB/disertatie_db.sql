@@ -110,21 +110,21 @@ CREATE TABLE IF NOT EXISTS `disertatie_db`.`user` (
   `user_id` INT NOT NULL,
   `user_nume` VARCHAR(30) NOT NULL,
   `user_prenume` VARCHAR(30) NOT NULL,
-  `user_cnp` VARCHAR(13) NOT NULL,
+  `user_telefon` VARCHAR(10) NOT NULL,
   `user_statut` VARCHAR(20) NOT NULL,
-  `userlog_userlog_id` INT NOT NULL,
-  `hub_hub_id` INT NOT NULL,
-  PRIMARY KEY (`user_id`, `userlog_userlog_id`, `hub_hub_id`),
-  UNIQUE INDEX `user_cnp_UNIQUE` (`user_cnp` ASC),
-  INDEX `fk_user_userlog_idx` (`userlog_userlog_id` ASC),
-  INDEX `fk_user_hub1_idx` (`hub_hub_id` ASC),
+  `user_userlog_id` INT NOT NULL,
+  `user_hub_id` INT NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE INDEX `user_cnp_UNIQUE` (`user_telefon` ASC),
+  INDEX `fk_user_userlog_idx` (`user_userlog_id` ASC),
+  INDEX `fk_user_hub1_idx` (`user_hub_id` ASC),
   CONSTRAINT `fk_user_userlog`
-    FOREIGN KEY (`userlog_userlog_id`)
+    FOREIGN KEY (`user_userlog_id`)
     REFERENCES `disertatie_db`.`userlog` (`userlog_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_hub1`
-    FOREIGN KEY (`hub_hub_id`)
+    FOREIGN KEY (`user_hub_id`)
     REFERENCES `disertatie_db`.`hub` (`hub_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

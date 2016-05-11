@@ -11,18 +11,6 @@
         android:layout_marginBottom="@dimen/dim_50dp"
         android:src="@drawable/logo"/>
 
-    <!--<TextView-->
-        <!--android:id="@+id/title_textview"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:layout_below="@+id/logo_imageview"-->
-        <!--android:text="Welcome ..."-->
-        <!--android:textSize="@dimen/dim_25dp"-->
-        <!--android:layout_margin="@dimen/dim_50dp"-->
-        <!--android:textColor="@color/black" />-->
-
     <TextView
         android:id="@+id/user_textview"
         android:layout_width="wrap_content"
@@ -69,42 +57,31 @@
         android:textColor="@color/black"
         android:textSize="@dimen/dim_20dp" />
 
-
     <Button
         android:id="@+id/login_button"
-        android:layout_width="@dimen/dim_180dp"
+        android:layout_width="@dimen/dim_240dp"
         android:layout_height="@dimen/dim_50dp"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/psw_edittext"
         android:layout_marginTop="@dimen/dim_50dp"
         android:text="Login"
         android:textColor="@color/black"
-        android:textSize="@dimen/dim_15dp" />
-
-    <Button
-        android:id="@+id/reg_button"
-        android:layout_width="@dimen/dim_180dp"
-        android:layout_height="@dimen/dim_50dp"
-        android:layout_below="@+id/psw_textview"
-        android:layout_marginTop="@dimen/dim_50dp"
-        android:layout_alignParentLeft="true"
-        android:text="Register"
-        android:textColor="@color/black"
-        android:textSize="@dimen/dim_15dp" />
+        android:textSize="@dimen/dim_15dp"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/psw_res_button"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/dim_240dp"
         android:layout_height="@dimen/dim_50dp"
         android:text="Forgot Password"
         android:layout_below="@+id/login_button"
         android:textColor="@color/black"
-        android:textSize="@dimen/dim_15dp" />
+        android:textSize="@dimen/dim_15dp"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/error_textview"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dim_100dp"
+        android:layout_height="@dimen/dim_80dp"
         android:textColor="@color/black"
         android:textSize="@dimen/dim_15dp"
         android:gravity="center"
