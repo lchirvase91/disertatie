@@ -2,9 +2,7 @@ package com.example.liviu.disertatieandroidapp;
 
 import java.io.Serializable;
 
-/**
- * Created by lchirvase on 12.05.2016.
- */
+
 public class UserBean implements Serializable {
 
     private int id;

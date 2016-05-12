@@ -21,7 +21,8 @@ import java.util.List;
 
 public class LoginActivity extends Activity {
 
-    private static final String TAG = "DIS_APP_" + LoginActivity.class.getSimpleName();
+    private static final String TAG = DisertatieAppConstants.TAG + LoginActivity.class
+            .getSimpleName();
 
     private EditText mUsername;
     private EditText mPsw;
@@ -30,13 +31,12 @@ public class LoginActivity extends Activity {
     // Creating JSON Parser object
     private JSONParser mJParser;
 
-    private UserBean mUserBean;
-
     // url for login
     private static String url_login = "http://192.168.0.102/disertatie_php/login.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
+
     private static final String TAG_MESSAGE = "message";
     private static final String TAG_USER = "user";
     private static final String TAG_USER_ID = "id";
@@ -45,8 +45,10 @@ public class LoginActivity extends Activity {
     private static final String TAG_USER_TEL = "telefon";
     private static final String TAG_USER_STATUT = "statut";
 
-    // user JSONObject
-    JSONArray user = null;
+    // users JSONArray
+    private JSONArray mUser;
+
+    private UserBean mUserBean;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,13 +105,13 @@ public class LoginActivity extends Activity {
                 final String message = json.getString(TAG_MESSAGE);
 
                 if (success == 1) {
-                    user = json.getJSONArray(TAG_USER);
+                    mUser = json.getJSONArray(TAG_USER);
 
-                    mUserBean.setId(user.getJSONObject(0).getInt(TAG_USER_ID));
-                    mUserBean.setNume(user.getJSONObject(0).getString(TAG_USER_NUME));
-                    mUserBean.setPrenume(user.getJSONObject(0).getString(TAG_USER_PRENUME));
-                    mUserBean.setTelefon(user.getJSONObject(0).getString(TAG_USER_TEL));
-                    mUserBean.setStatut(user.getJSONObject(0).getString(TAG_USER_STATUT));
+                    mUserBean.setId(mUser.getJSONObject(0).getInt(TAG_USER_ID));
+                    mUserBean.setNume(mUser.getJSONObject(0).getString(TAG_USER_NUME));
+                    mUserBean.setPrenume(mUser.getJSONObject(0).getString(TAG_USER_PRENUME));
+                    mUserBean.setTelefon(mUser.getJSONObject(0).getString(TAG_USER_TEL));
+                    mUserBean.setStatut(mUser.getJSONObject(0).getString(TAG_USER_STATUT));
 
                     Intent i = new Intent(getApplicationContext(), UserLoggedActivity.class);
                     // Closing all previous activities

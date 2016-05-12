@@ -21,7 +21,8 @@ import java.util.List;
 
 public class ChangePasswordActivity extends Activity {
 
-    private static final String TAG = "DIS_APP_" + ChangePasswordActivity.class.getSimpleName();
+    private static final String TAG = DisertatieAppConstants.TAG + ChangePasswordActivity.class
+            .getSimpleName();
 
     private EditText mOldPsw;
     private EditText mNewPsw;
@@ -59,13 +60,14 @@ public class ChangePasswordActivity extends Activity {
         mChangePswButton = (Button) findViewById(R.id.change_psw_button);
         mCancelButton = (Button) findViewById(R.id.cancel_button);
 
-        mOldPswText = mOldPsw.getText().toString();
-        mNewPswText = mNewPsw.getText().toString();
-        mConfirmNewPswText = mConfirmNewPsw.getText().toString();
-
         mChangePswButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                mOldPswText = mOldPsw.getText().toString();
+                mNewPswText = mNewPsw.getText().toString();
+                mConfirmNewPswText = mConfirmNewPsw.getText().toString();
+
                 if (mOldPswText.isEmpty() || mNewPswText.isEmpty() || mConfirmNewPswText.isEmpty
                         ()) {
                     Log.e(TAG, "empty field");
@@ -89,7 +91,7 @@ public class ChangePasswordActivity extends Activity {
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                finish();
             }
         });
     }
@@ -116,6 +118,8 @@ public class ChangePasswordActivity extends Activity {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("user_id", id));
+            params.add(new BasicNameValuePair("userlog__old_password", mOldPswText));
+            params.add(new BasicNameValuePair("userlog_new_password", mNewPswText));
             // getting JSON string from URL
             JSONObject json = mJParser.makeHttpRequest(url_change_psw, "POST", params);
 
@@ -132,15 +136,12 @@ public class ChangePasswordActivity extends Activity {
                 final String message = json.getString(TAG_MESSAGE);
 
                 if (success == 1) {
-
                     finish();
-
                 } else {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(), "Change password failed: " +
-                                    message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Change password failed: " , Toast.LENGTH_SHORT).show();
                         }
                     });
 
