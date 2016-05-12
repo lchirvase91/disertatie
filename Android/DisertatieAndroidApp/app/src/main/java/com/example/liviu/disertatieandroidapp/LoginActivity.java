@@ -1,7 +1,6 @@
 package com.example.liviu.disertatieandroidapp;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,8 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
@@ -20,25 +17,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class LoginActivity extends Activity {
 
     private static final String TAG = "DIS_APP_" + LoginActivity.class.getSimpleName();
 
-    // Progress Dialog
-    private ProgressDialog mProgDialog;
-
     private EditText mUsername;
     private EditText mPsw;
     private Button mLoginButton;
 
     // Creating JSON Parser object
-    JSONParser jParser = new JSONParser();
+    private JSONParser mJParser;
 
-    ArrayList<HashMap<String, String>> productsList;
-    UserBean userBean = null;
+    private UserBean mUserBean;
 
     // url for login
     private static String url_login = "http://192.168.0.102/disertatie_php/login.php";
@@ -65,7 +57,9 @@ public class LoginActivity extends Activity {
         mPsw = (EditText) findViewById(R.id.psw_edittext);
         mLoginButton = (Button) findViewById(R.id.login_button);
 
-        userBean = new UserBean();
+        mJParser = new JSONParser();
+
+        mUserBean = new UserBean();
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,19 +77,6 @@ public class LoginActivity extends Activity {
     class LoginAsyncTask extends AsyncTask<String, String, String> {
 
         /**
-         * Before starting background thread Show Progress Dialog
-         */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-//			mProgDialog = new ProgressDialog(LoginActivity.this);
-//			mProgDialog.setMessage("Please wait...");
-//			mProgDialog.setIndeterminate(false);
-//			mProgDialog.setCancelable(false);
-//			mProgDialog.show();
-        }
-
-        /**
          * getting All products from url
          */
         protected String doInBackground(String... args) {
@@ -107,7 +88,7 @@ public class LoginActivity extends Activity {
             params.add(new BasicNameValuePair("userlog_username", username));
             params.add(new BasicNameValuePair("userlog_password", psw));
             // getting JSON string from URL
-            JSONObject json = jParser.makeHttpRequest(url_login, "POST", params);
+            JSONObject json = mJParser.makeHttpRequest(url_login, "POST", params);
 
             if (json == null) {
                 Log.d(TAG, "json object is null");
@@ -122,60 +103,26 @@ public class LoginActivity extends Activity {
                 final String message = json.getString(TAG_MESSAGE);
 
                 if (success == 1) {
-                    try {
+                    user = json.getJSONArray(TAG_USER);
 
-                        user = json.getJSONArray(TAG_USER);
-
-                        userBean.setId(user.getJSONObject(0).getInt(TAG_USER_ID));
-                        userBean.setNume(user.getJSONObject(0).getString(TAG_USER_NUME));
-                        userBean.setPrenume(user.getJSONObject(0).getString(TAG_USER_PRENUME));
-                        userBean.setTelefon(user.getJSONObject(0).getString(TAG_USER_TEL));
-                        userBean.setStatut(user.getJSONObject(0).getString(TAG_USER_STATUT));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    // products found
-                    // Getting Array of Products
-//                    products = json.getJSONArray();
-
-//                    // looping through All Products
-//                    for (int i = 0; i < products.length(); i++) {
-//                        JSONObject c = products.getJSONObject(i);
-//
-//                        // Storing each json item in variable
-//                        String id = c.getString(TAG_PID);
-//                        String name = c.getString(TAG_NAME);
-//
-//                        // creating new HashMap
-//                        HashMap<String, String> map = new HashMap<String, String>();
-//
-//                        // adding each child node to HashMap key => value
-//                        map.put(TAG_PID, id);
-//                        map.put(TAG_NAME, name);
-//
-//                        // adding HashList to ArrayList
-//                        productsList.add(map);
-//                    }
+                    mUserBean.setId(user.getJSONObject(0).getInt(TAG_USER_ID));
+                    mUserBean.setNume(user.getJSONObject(0).getString(TAG_USER_NUME));
+                    mUserBean.setPrenume(user.getJSONObject(0).getString(TAG_USER_PRENUME));
+                    mUserBean.setTelefon(user.getJSONObject(0).getString(TAG_USER_TEL));
+                    mUserBean.setStatut(user.getJSONObject(0).getString(TAG_USER_STATUT));
 
                     Intent i = new Intent(getApplicationContext(), UserLoggedActivity.class);
                     // Closing all previous activities
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    i.putExtra("user", userBean);
+                    i.putExtra("user", mUserBean);
                     startActivity(i);
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Toast.makeText(getApplicationContext(), "Login succesfully", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-
 
                 } else {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(), "Login failed --- " + message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Login failed: " + message,
+                                    Toast.LENGTH_SHORT).show();
                         }
                     });
 

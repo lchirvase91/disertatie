@@ -19,45 +19,85 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserLoggedActivity extends Activity {
+public class ChangePasswordActivity extends Activity {
 
-    private static final String TAG = "DIS_APP_" + UserLoggedActivity.class.getSimpleName();
+    private static final String TAG = "DIS_APP_" + ChangePasswordActivity.class.getSimpleName();
+
+    private EditText mOldPsw;
+    private EditText mNewPsw;
+    private EditText mConfirmNewPsw;
+    private Button mChangePswButton;
+    private Button mCancelButton;
+
+    private UserBean mUserBean;
+    private String mOldPswText;
+    private String mNewPswText;
+    private String mConfirmNewPswText;
+
+    private JSONParser mJParser;
+
+    // url for login
+    private static String url_change_psw = "http://192.168.0.102/disertatie_php/change_psw.php";
+
+    // JSON Node names
+    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_MESSAGE = "message";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_logged);
+        setContentView(R.layout.activity_change_password);
 
         Intent intent = getIntent();
-        final UserBean userBean = (UserBean) intent.getExtras().getSerializable("user");
+        mUserBean = (UserBean) intent.getExtras().getSerializable("user");
 
-        Button logoutButton = (Button) findViewById(R.id.logout_button);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
+        mJParser = new JSONParser();
+
+        mOldPsw = (EditText) findViewById(R.id.old_psw_edittext);
+        mNewPsw = (EditText) findViewById(R.id.new_psw_edittext);
+        mConfirmNewPsw = (EditText) findViewById(R.id.confirm_newpsw_edittext);
+        mChangePswButton = (Button) findViewById(R.id.change_psw_button);
+        mCancelButton = (Button) findViewById(R.id.cancel_button);
+
+        mOldPswText = mOldPsw.getText().toString();
+        mNewPswText = mNewPsw.getText().toString();
+        mConfirmNewPswText = mConfirmNewPsw.getText().toString();
+
+        mChangePswButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOldPswText.isEmpty() || mNewPswText.isEmpty() || mConfirmNewPswText.isEmpty
+                        ()) {
+                    Log.e(TAG, "empty field");
+                    Toast.makeText(getApplicationContext(), "Change password failed: Completati " +
+                            "toate campurile", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!mNewPswText.equals(mConfirmNewPswText)) {
+                    Log.e(TAG, "new password should be same in both fields");
+                    Toast.makeText(getApplicationContext(), "Change password failed: Parola " +
+                            "diferita la confirmare", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Loading user in Background Thread
+                new ChangePswAsyncTask().execute();
+
+            }
+        });
+
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-
-        Button changePswButton = (Button) findViewById(R.id.change_psw_button);
-        changePswButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), ChangePasswordActivity.class);
-                // Closing all previous activities
-                i.putExtra("user", userBean);
-                startActivity(i);
-            }
-        });
-
-        Log.d(TAG, "zzzzzzzzzzzzzzzzzzzzzzz   ---  " + userBean.getPrenume());
-
     }
 
     /**
      * Background Async Task to Load all product by making HTTP Request
      */
-    class LoginAsyncTask extends AsyncTask<String, String, String> {
+    class ChangePswAsyncTask extends AsyncTask<String, String, String> {
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -65,29 +105,22 @@ public class UserLoggedActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//			mProgDialog = new ProgressDialog(LoginActivity.this);
-//			mProgDialog.setMessage("Please wait...");
-//			mProgDialog.setIndeterminate(false);
-//			mProgDialog.setCancelable(false);
-//			mProgDialog.show();
         }
 
         /**
          * getting All products from url
          */
         protected String doInBackground(String... args) {
-            String username = mUsername.getText().toString();
-            String psw = mPsw.getText().toString();
+            String id = String.valueOf(mUserBean.getId());
 
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("userlog_username", username));
-            params.add(new BasicNameValuePair("userlog_password", psw));
+            params.add(new BasicNameValuePair("user_id", id));
             // getting JSON string from URL
-            JSONObject json = jParser.makeHttpRequest(url_login, "POST", params);
+            JSONObject json = mJParser.makeHttpRequest(url_change_psw, "POST", params);
 
             if (json == null) {
-                Log.d(TAG, "json object is null");
+                Log.e(TAG, "json object is null");
                 return "";
             }
             // Check your log cat for JSON reponse
@@ -99,37 +132,15 @@ public class UserLoggedActivity extends Activity {
                 final String message = json.getString(TAG_MESSAGE);
 
                 if (success == 1) {
-                    try {
 
-                        user = json.getJSONArray(TAG_USER);
-
-                        userBean.setId(user.getJSONObject(0).getInt(TAG_USER_ID));
-                        userBean.setNume(user.getJSONObject(0).getString(TAG_USER_NUME));
-                        userBean.setPrenume(user.getJSONObject(0).getString(TAG_USER_PRENUME));
-                        userBean.setTelefon(user.getJSONObject(0).getString(TAG_USER_TEL));
-                        userBean.setStatut(user.getJSONObject(0).getString(TAG_USER_STATUT));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    Intent i = new Intent(getApplicationContext(), UserLoggedActivity.class);
-                    // Closing all previous activities
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    i.putExtra("user", userBean);
-                    startActivity(i);
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Toast.makeText(getApplicationContext(), "Login succesfully", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-
+                    finish();
 
                 } else {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(), "Login failed --- " + message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Change password failed: " +
+                                    message, Toast.LENGTH_SHORT).show();
                         }
                     });
 
