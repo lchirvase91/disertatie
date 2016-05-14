@@ -21,7 +21,7 @@ if (isset($_POST['userlog_username']) && isset($_POST['userlog_password']) && !e
 	$psw = $_POST['userlog_password'];
 
     // get a user from userlog table
-    $result = mysql_query("SELECT * FROM user where user_userlog_id IN (select userlog_id FROM userlog WHERE userlog_username = '$username' AND userlog_password= '$psw')");
+    $result = mysql_query("SELECT * FROM user where user_userlog_id = (select userlog_id FROM userlog WHERE userlog_username = '$username' AND userlog_password = '$psw')");
 
     if (!empty($result)) {
         // check for empty result
@@ -37,7 +37,7 @@ if (isset($_POST['userlog_username']) && isset($_POST['userlog_password']) && !e
             $user["statut"] = $result["user_statut"];
             // success
             $response["success"] = 1;
-	    $response["message"] = "Autentificare reusita!";
+			$response["message"] = "Autentificare reusita!";
 
             // user node
             $response["user"] = array();
