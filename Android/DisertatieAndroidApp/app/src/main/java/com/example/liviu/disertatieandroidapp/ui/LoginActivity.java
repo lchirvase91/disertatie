@@ -1,4 +1,4 @@
-package com.example.liviu.disertatieandroidapp;
+package com.example.liviu.disertatieandroidapp.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.liviu.disertatieandroidapp.utils.DisertatieAppConstants;
+import com.example.liviu.disertatieandroidapp.utils.JSONParser;
+import com.example.liviu.disertatieandroidapp.R;
+import com.example.liviu.disertatieandroidapp.utils.UserBean;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -32,7 +37,7 @@ public class LoginActivity extends Activity {
     private JSONParser mJParser;
 
     // url for login
-    private static String url_login = "http://192.168.0.102/disertatie_php/login.php";
+    private static String url_login = "http://192.168.0.100/disertatie_php/login.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -71,6 +76,19 @@ public class LoginActivity extends Activity {
             }
         });
 
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mUsername.getText().length() != 0) {
+            mUsername.getText().clear();
+        }
+        if (mPsw.getText().length() != 0) {
+            mPsw.getText().clear();
+        }
+
+        mUsername.requestFocus();
     }
 
     /**
@@ -115,7 +133,6 @@ public class LoginActivity extends Activity {
 
                     Intent i = new Intent(getApplicationContext(), UserLoggedActivity.class);
                     // Closing all previous activities
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     i.putExtra("user", mUserBean);
                     startActivity(i);
 

@@ -1,4 +1,4 @@
-package com.example.liviu.disertatieandroidapp;
+package com.example.liviu.disertatieandroidapp.utils;
 
 /**
  * Created by Liviu on 5/12/2016.

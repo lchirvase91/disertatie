@@ -1,15 +1,19 @@
-package com.example.liviu.disertatieandroidapp;
+package com.example.liviu.disertatieandroidapp.ui;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.liviu.disertatieandroidapp.utils.DisertatieAppConstants;
+import com.example.liviu.disertatieandroidapp.utils.JSONParser;
+import com.example.liviu.disertatieandroidapp.R;
+import com.example.liviu.disertatieandroidapp.utils.UserBean;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -38,7 +42,7 @@ public class ChangePasswordActivity extends Activity {
     private JSONParser mJParser;
 
     // url for login
-    private static String url_change_psw = "http://192.168.0.102/disertatie_php/change_psw.php";
+    private static String url_change_psw = "http://192.168.0.100/disertatie_php/change_psw.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -70,7 +74,7 @@ public class ChangePasswordActivity extends Activity {
 
                 if (mOldPswText.isEmpty() || mNewPswText.isEmpty() || mConfirmNewPswText.isEmpty
                         ()) {
-                    Log.e(TAG, "empty field");
+                    Log.e(TAG, "empty fields");
                     Toast.makeText(getApplicationContext(), "Change password failed: Completati " +
                             "toate campurile", Toast.LENGTH_SHORT).show();
                     return;
@@ -96,6 +100,12 @@ public class ChangePasswordActivity extends Activity {
         });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
     /**
      * Background Async Task to Load all product by making HTTP Request
      */
@@ -117,9 +127,9 @@ public class ChangePasswordActivity extends Activity {
 
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("user_id", id));
-            params.add(new BasicNameValuePair("userlog__old_password", mOldPswText));
-            params.add(new BasicNameValuePair("userlog_new_password", mNewPswText));
+            params.add(new BasicNameValuePair("id", id));
+            params.add(new BasicNameValuePair("old_password", mOldPswText));
+            params.add(new BasicNameValuePair("new_password", mNewPswText));
             // getting JSON string from URL
             JSONObject json = mJParser.makeHttpRequest(url_change_psw, "POST", params);
 
@@ -141,7 +151,8 @@ public class ChangePasswordActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getApplicationContext(), "Change password failed: " , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Change password failed: " +
+                                    message, Toast.LENGTH_SHORT).show();
                         }
                     });
 

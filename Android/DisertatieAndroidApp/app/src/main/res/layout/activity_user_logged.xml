@@ -45,7 +45,7 @@
         android:textSize="@dimen/dim_15dp" />
 
     <Button
-        android:id="@+id/scanare_button"
+        android:id="@+id/scan_button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dim_50dp"
         android:layout_below="@+id/livrari_button"

@@ -1,4 +1,4 @@
-package com.example.liviu.disertatieandroidapp;
+package com.example.liviu.disertatieandroidapp.utils;
 
 import java.io.Serializable;
 
