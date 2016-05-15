@@ -5,6 +5,7 @@
     <dimen name="dim_20dp">20dp</dimen>
     <dimen name="dim_25dp">25dp</dimen>
     <dimen name="dim_30dp">30dp</dimen>
+    <dimen name="dim_40dp">40dp</dimen>
     <dimen name="dim_50dp">50dp</dimen>
     <dimen name="dim_80dp">80dp</dimen>
     <dimen name="dim_100dp">100dp</dimen>

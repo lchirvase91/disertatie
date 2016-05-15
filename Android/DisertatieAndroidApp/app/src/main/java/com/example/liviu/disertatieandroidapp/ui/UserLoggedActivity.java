@@ -50,6 +50,24 @@ public class UserLoggedActivity extends Activity {
             }
         });
 
+        Button comenziButton = (Button) findViewById(R.id.comenzi_button);
+        comenziButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), PreluariListActivity.class);
+                startActivity(i);
+            }
+        });
+
+        Button livrariButton = (Button) findViewById(R.id.livrari_button);
+        livrariButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), LivrariListActivity.class);
+                startActivity(i);
+            }
+        });
+
 
     }
 

@@ -76,7 +76,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `disertatie_db`.`colet` (
   `colet_id` INT NOT NULL AUTO_INCREMENT,
   `colet_awb` BIGINT NOT NULL,
-  `status` VARCHAR(30) NOT NULL,
+  `colet_status` VARCHAR(30) NOT NULL,
   `colet_comanda_id` INT NOT NULL,
   PRIMARY KEY (`colet_id`),
   UNIQUE INDEX `colet_awb_UNIQUE` (`colet_awb` ASC),
