@@ -3,4 +3,16 @@
     <string name="scan">Scan</string>
     <string name="preluari_list">Lista preluari</string>
     <string name="livrari_list">Lista livrari</string>
+    <string name="detalii_livrare">Detalii livrare</string>
+    <string name="detalii_preluare">Detalii preluare</string>
+    <string name="client">Client:</string>
+    <string name="judet">Judet:</string>
+    <string name="localitate">Localitate:</string>
+    <string name="adresa">Adresa:</string>
+    <string name="telefon">Telefon:</string>
+    <string name="nr_colete">Nr. colete:</string>
+    <string name="status">Status:</string>
+    <string name="livrare">Livrat</string>
+    <string name="preluare">Preluat</string>
+    <string name="save">Salvare</string>
 </resources>

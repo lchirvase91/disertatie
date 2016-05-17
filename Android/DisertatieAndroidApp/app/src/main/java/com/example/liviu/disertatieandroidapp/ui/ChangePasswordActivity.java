@@ -42,7 +42,7 @@ public class ChangePasswordActivity extends Activity {
     private JSONParser mJParser;
 
     // url for login
-    private static String url_change_psw = "http://192.168.0.100/disertatie_php/change_psw.php";
+    private static String url_change_psw = DisertatieAppConstants.DYNAMIC_URL + "change_psw.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";

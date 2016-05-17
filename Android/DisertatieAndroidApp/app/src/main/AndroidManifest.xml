@@ -23,6 +23,8 @@
         <activity android:name=".ui.ScanActivity"/>
         <activity android:name=".ui.PreluariListActivity"/>
         <activity android:name=".ui.LivrariListActivity"/>
+        <activity android:name=".ui.DetaliiPreluareActivity"/>
+        <activity android:name=".ui.DetaliiLivrareActivity"/>
     </application>
 
 </manifest>

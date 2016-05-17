@@ -37,7 +37,7 @@ public class LoginActivity extends Activity {
     private JSONParser mJParser;
 
     // url for login
-    private static String url_login = "http://192.168.0.100/disertatie_php/login.php";
+    private static String url_login = DisertatieAppConstants.DYNAMIC_URL + "login.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -132,8 +132,7 @@ public class LoginActivity extends Activity {
                     mUserBean.setStatut(mUser.getJSONObject(0).getString(TAG_USER_STATUT));
 
                     Intent i = new Intent(getApplicationContext(), UserLoggedActivity.class);
-                    // Closing all previous activities
-                    i.putExtra("user", mUserBean);
+                    i.putExtra(DisertatieAppConstants.USER_INTENT, mUserBean);
                     startActivity(i);
 
                 } else {

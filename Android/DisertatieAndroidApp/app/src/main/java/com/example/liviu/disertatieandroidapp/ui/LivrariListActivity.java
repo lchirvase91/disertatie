@@ -1,6 +1,7 @@
 package com.example.liviu.disertatieandroidapp.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.liviu.disertatieandroidapp.R;
+import com.example.liviu.disertatieandroidapp.utils.ComandaBean;
 import com.example.liviu.disertatieandroidapp.utils.DisertatieAppConstants;
 import com.example.liviu.disertatieandroidapp.utils.JSONParser;
 
@@ -30,17 +32,25 @@ public class LivrariListActivity extends Activity {
     private ListView mListView;
     private JSONParser mJParser;
     private JSONArray mLivrari;
-    private ArrayList<String> mLivrariList;
+    private ArrayList<ComandaBean> mComenziList;
+    private ArrayList<String> mIdsComenziList;
+    private ComandaBean mComandaBean;
 
     // url
-    private static String url_change_psw = "http://192.168.0" +
-            ".100/disertatie_php/get_all_deliveries.php";
+    private static String url_change_psw = DisertatieAppConstants.DYNAMIC_URL +
+            "get_all_deliveries.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
     private static final String TAG_COMENZI = "comenzi";
     private static final String TAG_ID = "comanda_id";
+    private static final String TAG_NUME = "client_nume";
+    private static final String TAG_JUDET = "client_judet";
+    private static final String TAG_LOC = "client_localitate";
+    private static final String TAG_ADRESA = "client_adresa";
+    private static final String TAG_TEL = "client_telefon";
+    private static final String TAG_NR_COLETE = "nr_colete";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,16 +70,18 @@ public class LivrariListActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                // ListView Clicked item index
-                int itemPosition = position;
-
                 // ListView Clicked item value
                 String itemValue = (String) mListView.getItemAtPosition(position);
 
-                // Show Alert
-                Toast.makeText(getApplicationContext(),
-                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
-                        .show();
+                for (ComandaBean comanda : mComenziList) {
+                    if (comanda.getId().equals(itemValue)) {
+                        Intent i = new Intent(getApplicationContext(), DetaliiLivrareActivity
+                                .class);
+                        i.putExtra(DisertatieAppConstants.LIVRARE_INTENT, comanda);
+                        startActivity(i);
+                        break;
+                    }
+                }
             }
 
         });
@@ -105,7 +117,8 @@ public class LivrariListActivity extends Activity {
             // Check your log cat for JSON reponse
             Log.d(TAG, "Display json object: " + json.toString());
 
-            mLivrariList = new ArrayList<String>();
+            mIdsComenziList = new ArrayList<String>();
+            mComenziList = new ArrayList<ComandaBean>();
             try {
                 // Checking for SUCCESS TAG
                 int success = json.getInt(TAG_SUCCESS);
@@ -116,12 +129,22 @@ public class LivrariListActivity extends Activity {
 
                     // looping through All Products
                     for (int i = 0; i < mLivrari.length(); i++) {
-                        JSONObject c = mLivrari.getJSONObject(i);
+                        JSONObject object = mLivrari.getJSONObject(i);
 
                         // Storing each json item in variable
-                        String id = c.getString(TAG_ID);
+                        // Storing each json item in variable
+                        String id = object.getString(TAG_ID);
+                        String nume = object.getString(TAG_NUME);
+                        String judet = object.getString(TAG_JUDET);
+                        String loc = object.getString(TAG_LOC);
+                        String adresa = object.getString(TAG_ADRESA);
+                        String tel = object.getString(TAG_TEL);
+                        String nr_colete = object.getString(TAG_NR_COLETE);
 
-                        mLivrariList.add(id);
+                        mComandaBean = new ComandaBean(id, nume,judet, loc, adresa, tel,
+                                nr_colete);
+                        mIdsComenziList.add(id);
+                        mComenziList.add(mComandaBean);
                     }
                 } else {
                     runOnUiThread(new Runnable() {
@@ -151,7 +174,7 @@ public class LivrariListActivity extends Activity {
 
                     // use your custom layout
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
-                            R.layout.list_item_layout, R.id.label, mLivrariList);
+                            R.layout.list_item_layout, R.id.label, mIdsComenziList);
 
                     mListView.setAdapter(adapter);
 
