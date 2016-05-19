@@ -15,7 +15,7 @@ require_once __DIR__ . '/db_connect.php';
 $db = new DB_CONNECT();
 
 // get all comenzi (preluare) from comenda table
-$result = mysql_query("SELECT DISTINCT comanda_id, client_nume, client_judet, client_localitate, client_adresa, client_telefon, comanda_nr_colete, comanda_greutate, comanda_data_comanda FROM client, comanda, colet WHERE client_id = comanda_exp_id AND comanda_id = colet_comanda_id  AND colet_awb IS NULL ORDER BY comanda_data_comanda") or die(mysql_error());
+$result = mysql_query("SELECT DISTINCT comanda_id, client_nume, client_judet, client_localitate, client_adresa, client_telefon, comanda_nr_colete, comanda_greutate, comanda_data_comanda FROM client, comanda, colet WHERE client_id = comanda_exp_id AND comanda_id = colet_comanda_id  AND colet_awb IS NULL and colet_status = 'nepreluat' ORDER BY comanda_data_comanda") or die(mysql_error());
 
 // check for empty result
 if (mysql_num_rows($result) > 0) {

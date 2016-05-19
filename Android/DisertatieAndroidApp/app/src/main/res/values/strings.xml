@@ -5,6 +5,7 @@
     <string name="livrari_list">Lista livrari</string>
     <string name="detalii_livrare">Detalii livrare</string>
     <string name="detalii_preluare">Detalii preluare</string>
+    <string name="detalii_scanare">Detalii scanare</string>
     <string name="client">Client:</string>
     <string name="judet">Judet:</string>
     <string name="localitate">Localitate:</string>
@@ -15,4 +16,7 @@
     <string name="livrare">Livrat</string>
     <string name="preluare">Preluat</string>
     <string name="save">Salvare</string>
+    <string name="colet_id">ID:</string>
+    <string name="awb">AWB:</string>
+    <string name="update">Update</string>
 </resources>

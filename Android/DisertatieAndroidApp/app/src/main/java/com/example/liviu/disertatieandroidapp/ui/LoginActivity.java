@@ -41,7 +41,6 @@ public class LoginActivity extends Activity {
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
-
     private static final String TAG_MESSAGE = "message";
     private static final String TAG_USER = "user";
     private static final String TAG_USER_ID = "id";
@@ -125,7 +124,7 @@ public class LoginActivity extends Activity {
                 if (success == 1) {
                     mUser = json.getJSONArray(TAG_USER);
 
-                    mUserBean.setId(mUser.getJSONObject(0).getInt(TAG_USER_ID));
+                    mUserBean.setId(mUser.getJSONObject(0).getString(TAG_USER_ID));
                     mUserBean.setNume(mUser.getJSONObject(0).getString(TAG_USER_NUME));
                     mUserBean.setPrenume(mUser.getJSONObject(0).getString(TAG_USER_PRENUME));
                     mUserBean.setTelefon(mUser.getJSONObject(0).getString(TAG_USER_TEL));

@@ -2,21 +2,51 @@ package com.example.liviu.disertatieandroidapp.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.liviu.disertatieandroidapp.utils.ColetBean;
 import com.example.liviu.disertatieandroidapp.utils.DisertatieAppConstants;
 import com.example.liviu.disertatieandroidapp.R;
 import com.example.liviu.disertatieandroidapp.utils.IntentIntegrator;
 import com.example.liviu.disertatieandroidapp.utils.IntentResult;
+import com.example.liviu.disertatieandroidapp.utils.JSONParser;
 import com.example.liviu.disertatieandroidapp.utils.UserBean;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserLoggedActivity extends Activity {
 
     private static final String TAG = DisertatieAppConstants.TAG + UserLoggedActivity.class
             .getSimpleName();
+
+    private static String url_colet_infos = DisertatieAppConstants.DYNAMIC_URL +
+            "get_colet_infos_by_awb.php";
+
+    private UserBean mUserBean;
+    private ColetBean mColetBean;
+    private String mAWB;
+
+    // JSON Node names
+    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_MESSAGE = "message";
+    private static final String TAG_COLET = "colet";
+    private static final String TAG_ID = "colet_id";
+    private static final String TAG_STATUS = "colet_status";
+
+    private JSONParser mJParser;
+    private JSONArray mColete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +54,10 @@ public class UserLoggedActivity extends Activity {
         setContentView(R.layout.activity_user_logged);
 
         Intent intent = getIntent();
-        final UserBean userBean = (UserBean) intent.getExtras().getSerializable("user");
+        mUserBean = (UserBean) intent.getExtras().getSerializable(DisertatieAppConstants
+                .USER_INTENT);
+
+        mJParser = new JSONParser();
 
         Button logoutButton = (Button) findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -39,7 +72,7 @@ public class UserLoggedActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), ChangePasswordActivity.class);
-                i.putExtra(DisertatieAppConstants.USER_INTENT, userBean);
+                i.putExtra(DisertatieAppConstants.USER_INTENT, mUserBean);
                 startActivity(i);
             }
         });
@@ -72,6 +105,7 @@ public class UserLoggedActivity extends Activity {
         });
 
 
+
     }
 
     @Override
@@ -81,23 +115,107 @@ public class UserLoggedActivity extends Activity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode,
+                resultCode, intent);
         if (scanningResult != null) {
-            String scanContent = scanningResult.getContents();
-            String scanFormat = scanningResult.getFormatName();
-            StringBuilder builder = new StringBuilder();
-            builder.append("FORMAT: " + scanFormat);
-            builder.append("\n");
-            builder.append("CONTENT: " + scanContent);
-            Toast toast = Toast.makeText(getApplicationContext(), builder.toString(), Toast
-                    .LENGTH_LONG);
-            toast.show();
+            mAWB = scanningResult.getContents();
+            mColetBean = null;
+            new LoadColetInfosAsyncTask().execute();
+        } else {
+            Toast.makeText(getApplicationContext(), "No scan data received!", Toast.LENGTH_SHORT)
+                    .show();
         }
-        else{
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "No scan data received!", Toast.LENGTH_SHORT);
-            toast.show();
+    }
+
+    /**
+     * Background Async Task to Load all product by making HTTP Request
+     */
+    class LoadColetInfosAsyncTask extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
         }
+
+        /**
+         * getting All products from url
+         */
+        protected String doInBackground(String... args) {
+
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("awb", mAWB));
+            // getting JSON string from URL
+            JSONObject json = mJParser.makeHttpRequest(url_colet_infos, "POST", params);
+
+            if (json == null) {
+                Log.e(TAG, "json object is null");
+            }
+            // Check your log cat for JSON reponse
+            Log.d(TAG, "Display json object: " + json.toString());
+
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt(TAG_SUCCESS);
+                final String message = json.getString(TAG_MESSAGE);
+
+                if (success == 1) {
+                    mColete = json.getJSONArray(TAG_COLET);
+
+                    // looping through All Products
+                    for (int i = 0; i < mColete.length(); i++) {
+                        JSONObject object = mColete.getJSONObject(i);
+
+                        // Storing each json item in variable
+                        String id = object.getString(TAG_ID);
+                        String status = object.getString(TAG_STATUS);
+
+						mColetBean = new ColetBean(id, mAWB, status);
+
+                    }
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String file_url) {
+
+            if (mColetBean != null) {
+                Intent i = new Intent(getApplicationContext(), ScanActivity.class);
+                i.putExtra(DisertatieAppConstants.USER_INTENT, mUserBean);
+                i.putExtra(DisertatieAppConstants.COLET_INTENT, mColetBean);
+                startActivity(i);
+            } else {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Lipsa informatii", Toast
+                                .LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+        }
+
     }
 
 }

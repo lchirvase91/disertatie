@@ -123,11 +123,9 @@ public class ChangePasswordActivity extends Activity {
          * getting All products from url
          */
         protected String doInBackground(String... args) {
-            String id = String.valueOf(mUserBean.getId());
-
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("id", id));
+            params.add(new BasicNameValuePair("id", mUserBean.getId()));
             params.add(new BasicNameValuePair("old_password", mOldPswText));
             params.add(new BasicNameValuePair("new_password", mNewPswText));
             // getting JSON string from URL

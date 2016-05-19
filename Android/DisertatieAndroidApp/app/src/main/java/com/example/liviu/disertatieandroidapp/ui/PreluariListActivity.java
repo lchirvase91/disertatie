@@ -60,9 +60,6 @@ public class PreluariListActivity extends Activity {
 
         mListView = (ListView) findViewById(R.id.preluari_list);
 
-        // Loading user in Background Thread
-        new LoadAllComandsAsyncTask().execute();
-
         // ListView Item Click Listener
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -84,6 +81,13 @@ public class PreluariListActivity extends Activity {
 
         });
 
+    }
+
+    public void onResume() {
+        super.onResume();
+
+        // Loading user in Background Thread
+        new LoadAllComandsAsyncTask().execute();
     }
 
     /**

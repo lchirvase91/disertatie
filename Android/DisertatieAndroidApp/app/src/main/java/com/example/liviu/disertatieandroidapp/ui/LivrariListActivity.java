@@ -60,9 +60,6 @@ public class LivrariListActivity extends Activity {
 
         mListView = (ListView) findViewById(R.id.livrari_list);
 
-        // Loading user in Background Thread
-        new LoadAllComandsAsyncTask().execute();
-
         // ListView Item Click Listener
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -85,8 +82,16 @@ public class LivrariListActivity extends Activity {
             }
 
         });
+    }
+
+    public void onResume() {
+        super.onResume();
+
+        // Loading user in Background Thread
+        new LoadAllComandsAsyncTask().execute();
 
     }
+
 
     /**
      * Background Async Task to Load all product by making HTTP Request

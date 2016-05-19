@@ -23,45 +23,36 @@ if (isset($_POST['userlog_username']) && isset($_POST['userlog_password']) && !e
     // get a user from userlog table
     $result = mysql_query("SELECT * FROM user where user_userlog_id = (select userlog_id FROM userlog WHERE userlog_username = '$username' AND userlog_password = '$psw')");
 
-    if (!empty($result)) {
-        // check for empty result
-        if (mysql_num_rows($result) > 0) {
+	// check for empty result
+	if (!empty($result) && mysql_num_rows($result) > 0) {
 
-            $result = mysql_fetch_array($result);
+		$result = mysql_fetch_array($result);
 
-            $user = array();
-            $user["id"] = $result["user_id"];
-            $user["nume"] = $result["user_nume"];
-            $user["prenume"] = $result["user_prenume"];
-            $user["telefon"] = $result["user_telefon"];
-            $user["statut"] = $result["user_statut"];
-            // success
-            $response["success"] = 1;
-			$response["message"] = "Autentificare reusita!";
+		$user = array();
+		$user["id"] = $result["user_id"];
+		$user["nume"] = $result["user_nume"];
+		$user["prenume"] = $result["user_prenume"];
+		$user["telefon"] = $result["user_telefon"];
+		$user["statut"] = $result["user_statut"];
+		// success
+		$response["success"] = 1;
+		$response["message"] = "Autentificare reusita!";
 
-            // user node
-            $response["user"] = array();
+		// user node
+		$response["user"] = array();
 
-            array_push($response["user"], $user);
+		array_push($response["user"], $user);
 
-            // echoing JSON response
-            echo json_encode($response);
-        } else {
-            // no product found
-            $response["success"] = 0;
-            $response["message"] = "Autentificare esuata!";
+		// echoing JSON response
+		echo json_encode($response);
+	} else {
+		// no product found
+		$response["success"] = 0;
+		$response["message"] = "Autentificare esuata!";
 
-            // echo no users JSON
-            echo json_encode($response);
-        }
-    } else {
-        // no product found
-        $response["success"] = 0;
-        $response["message"] = "Autentificare esuata!";
-
-        // echo no users JSON
-        echo json_encode($response);
-    }
+		// echo no users JSON
+		echo json_encode($response);
+	}
 } else {
     // required field is missing
     $response["success"] = 0;

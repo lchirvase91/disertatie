@@ -5,13 +5,13 @@ import java.io.Serializable;
 
 public class UserBean implements Serializable {
 
-    private int id;
+    private String id;
     private String nume;
     private String prenume;
     private String telefon;
     private String statut;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -31,7 +31,7 @@ public class UserBean implements Serializable {
         return statut;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
