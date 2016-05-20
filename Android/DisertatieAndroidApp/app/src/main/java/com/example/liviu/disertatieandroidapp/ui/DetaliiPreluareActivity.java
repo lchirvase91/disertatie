@@ -48,7 +48,7 @@ public class DetaliiPreluareActivity extends Activity {
 	private static final String TAG_SUCCESS = "success";
 	private static final String TAG_MESSAGE = "message";
 
-	ComandaBean mComandaBean;
+	private ComandaBean mComandaBean;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -99,6 +99,12 @@ public class DetaliiPreluareActivity extends Activity {
 		});
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		finishAffinity();
+	}
+
 	/**
 	 * Background Async Task to Load all product by making HTTP Request
 	 */
@@ -116,11 +122,9 @@ public class DetaliiPreluareActivity extends Activity {
 		 * getting All products from url
 		 */
 		protected String doInBackground(String... args) {
-			String idComanda = mComandaBean.getId();
-
 			// Building Parameters
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
-			params.add(new BasicNameValuePair("id_preluare", idComanda));
+			params.add(new BasicNameValuePair("id_preluare",  mComandaBean.getId()));
 			params.add(new BasicNameValuePair("datetime_preluare", DisertatieUtils
 					.getCurrentDateTime()));
 			// getting JSON string from URL

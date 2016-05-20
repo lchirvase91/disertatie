@@ -91,6 +91,7 @@ public class UserLoggedActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), PreluariListActivity.class);
+                i.putExtra(DisertatieAppConstants.USER_INTENT, mUserBean);
                 startActivity(i);
             }
         });
@@ -100,12 +101,16 @@ public class UserLoggedActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), LivrariListActivity.class);
+                i.putExtra(DisertatieAppConstants.USER_INTENT, mUserBean);
                 startActivity(i);
             }
         });
+    }
 
-
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finishAffinity();
     }
 
     @Override

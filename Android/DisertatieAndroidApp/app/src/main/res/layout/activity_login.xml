@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="@dimen/dim_50dp"
+        android:layout_marginBottom="@dimen/dim_80dp"
         android:src="@drawable/logo"/>
 
     <TextView
@@ -60,20 +60,10 @@
     <Button
         android:id="@+id/login_button"
         android:layout_width="@dimen/dim_240dp"
-        android:layout_height="@dimen/dim_50dp"
-        android:layout_below="@+id/psw_edittext"
-        android:layout_marginTop="@dimen/dim_50dp"
+        android:layout_height="@dimen/dim_80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dim_50dp"
         android:text="Login"
-        android:textColor="@color/black"
-        android:textSize="@dimen/dim_15dp"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:id="@+id/psw_res_button"
-        android:layout_width="@dimen/dim_240dp"
-        android:layout_height="@dimen/dim_50dp"
-        android:text="Forgot Password"
-        android:layout_below="@+id/login_button"
         android:textColor="@color/black"
         android:textSize="@dimen/dim_15dp"
         android:layout_centerHorizontal="true" />

@@ -15,8 +15,10 @@ import com.example.liviu.disertatieandroidapp.R;
 import com.example.liviu.disertatieandroidapp.utils.ComandaBean;
 import com.example.liviu.disertatieandroidapp.utils.DisertatieAppConstants;
 import com.example.liviu.disertatieandroidapp.utils.JSONParser;
+import com.example.liviu.disertatieandroidapp.utils.UserBean;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,11 +36,12 @@ public class LivrariListActivity extends Activity {
     private JSONArray mLivrari;
     private ArrayList<ComandaBean> mComenziList;
     private ArrayList<String> mIdsComenziList;
+    private UserBean mUserBean;
     private ComandaBean mComandaBean;
 
     // url
     private static String url_change_psw = DisertatieAppConstants.DYNAMIC_URL +
-            "get_all_deliveries.php";
+            "get_all_deliveries_for_current_user.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -56,9 +59,12 @@ public class LivrariListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_livrari_list);
 
+        mListView = (ListView) findViewById(R.id.livrari_list);
         mJParser = new JSONParser();
 
-        mListView = (ListView) findViewById(R.id.livrari_list);
+        Intent intent = getIntent();
+        mUserBean = (UserBean) intent.getExtras().getSerializable(DisertatieAppConstants
+                .USER_INTENT);
 
         // ListView Item Click Listener
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -92,6 +98,12 @@ public class LivrariListActivity extends Activity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finishAffinity();
+    }
+
 
     /**
      * Background Async Task to Load all product by making HTTP Request
@@ -113,6 +125,7 @@ public class LivrariListActivity extends Activity {
 
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id_user_livrare", mUserBean.getId()));
             // getting JSON string from URL
             JSONObject json = mJParser.makeHttpRequest(url_change_psw, "POST", params);
 
@@ -179,7 +192,7 @@ public class LivrariListActivity extends Activity {
 
                     // use your custom layout
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
-                            R.layout.list_item_layout, R.id.label, mIdsComenziList);
+                            R.layout.livrare_list_item_layout, R.id.label, mIdsComenziList);
 
                     mListView.setAdapter(adapter);
 

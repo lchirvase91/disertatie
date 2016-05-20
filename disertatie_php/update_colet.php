@@ -27,7 +27,7 @@ if (isset($_POST['id_user']) && isset($_POST['id_colet']) && isset($_POST['data_
     // check if row inserted or not
     if ($insert) {
          // mysql update row with matched pid
-		$update1 = mysql_query("UPDATE colet, comanda, client, operare, user, hub SET colet_status = 'livrat' WHERE colet_comanda_id = comanda_id AND comanda_dest_id = client_id AND colet_id = operare_colet_id AND operare_user_id = user_id AND user_hub_id = hub_id AND hub_judet = client_judet AND colet_id = 1 AND colet_status = 'in curs de livrare'");
+		$update1 = mysql_query("UPDATE colet, comanda, client, operare, user, hub SET colet_status = 'livrat' WHERE colet_comanda_id = comanda_id AND comanda_dest_id = client_id AND colet_id = operare_colet_id AND operare_user_id = user_id AND user_hub_id = hub_id AND hub_judet = client_judet AND colet_id = $colet_id AND colet_status = 'in curs de livrare'");
 		$update2 = mysql_query("UPDATE colet, comanda, client, operare, user, hub SET colet_status = 'in curs de livrare' WHERE colet_comanda_id = comanda_id AND comanda_dest_id = client_id AND colet_id = operare_colet_id AND operare_user_id = user_id AND user_hub_id = hub_id AND hub_judet = client_judet AND colet_id = $colet_id AND colet_status = 'in tranzit'");
 		$update3 = mysql_query("UPDATE colet, comanda, client exp, client dest, operare, user, hub set colet_status='in tranzit' where colet_comanda_id = comanda_id AND comanda_dest_id = dest.client_id AND comanda_exp_id = exp.client_id AND colet_id = operare_colet_id AND operare_user_id = user_id AND user_hub_id = hub_id AND hub_judet <> exp.client_judet AND hub_judet <> dest.client_judet AND colet_id = $colet_id AND colet_status = 'procesat'");
 
@@ -41,10 +41,10 @@ if (isset($_POST['id_user']) && isset($_POST['id_colet']) && isset($_POST['data_
 			$result2 = mysql_query("SELECT COUNT(colet_id) FROM colet, comanda WHERE comanda_id = colet_comanda_id GROUP BY comanda_id HAVING comanda_id = (SELECT colet_comanda_id FROM colet WHERE colet_id = $colet_id) AND COUNT(colet_id) = (SELECT COUNT(*) FROM colet WHERE colet_comanda_id = (SELECT colet_comanda_id FROM colet WHERE colet_id = $colet_id) AND colet_status='livrat')");
 				
 			if ($update3 && !empty($result1) && mysql_num_rows($result1) > 0) {
-				$update4 = mysql_query("UPDATE comanda SET comanda_data_expediere = $data_operare WHERE comanda_id = (SELECT colet_comanda_id from colet WHERE colet_id = $colet_id);");
+				$update4 = mysql_query("UPDATE comanda SET comanda_data_expediere = '$data_operare' WHERE comanda_id = (SELECT colet_comanda_id from colet WHERE colet_id = $colet_id)");
 			}	
 			if ($update1 && !empty($result2) && mysql_num_rows($result2) > 0) {
-				$update4 = mysql_query("UPDATE comanda SET comanda_data_livrare = $data_operare WHERE comanda_id = (SELECT colet_comanda_id from colet WHERE colet_id = $colet_id);");
+				$update4 = mysql_query("UPDATE comanda SET comanda_data_livrare = '$data_operare' WHERE comanda_id = (SELECT colet_comanda_id from colet WHERE colet_id = $colet_id)");
 			}	
 			
 			// echoing JSON response

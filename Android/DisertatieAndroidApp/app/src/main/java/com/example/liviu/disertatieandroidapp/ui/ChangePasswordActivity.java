@@ -32,7 +32,6 @@ public class ChangePasswordActivity extends Activity {
     private EditText mNewPsw;
     private EditText mConfirmNewPsw;
     private Button mChangePswButton;
-    private Button mCancelButton;
 
     private UserBean mUserBean;
     private String mOldPswText;
@@ -62,7 +61,6 @@ public class ChangePasswordActivity extends Activity {
         mNewPsw = (EditText) findViewById(R.id.new_psw_edittext);
         mConfirmNewPsw = (EditText) findViewById(R.id.confirm_newpsw_edittext);
         mChangePswButton = (Button) findViewById(R.id.change_psw_button);
-        mCancelButton = (Button) findViewById(R.id.cancel_button);
 
         mChangePswButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,18 +90,12 @@ public class ChangePasswordActivity extends Activity {
             }
         });
 
-        mCancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        finish();
+        finishAffinity();
     }
 
     /**

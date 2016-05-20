@@ -98,6 +98,12 @@ public class DetaliiLivrareActivity extends Activity {
 		});
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		finishAffinity();
+	}
+
 	/**
 	 * Background Async Task to Load all product by making HTTP Request
 	 */

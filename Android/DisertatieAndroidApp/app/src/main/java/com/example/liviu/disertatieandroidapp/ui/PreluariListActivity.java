@@ -15,8 +15,10 @@ import com.example.liviu.disertatieandroidapp.R;
 import com.example.liviu.disertatieandroidapp.utils.ComandaBean;
 import com.example.liviu.disertatieandroidapp.utils.DisertatieAppConstants;
 import com.example.liviu.disertatieandroidapp.utils.JSONParser;
+import com.example.liviu.disertatieandroidapp.utils.UserBean;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,11 +36,12 @@ public class PreluariListActivity extends Activity {
     private JSONArray mComenzi;
     private ArrayList<ComandaBean> mComenziList;
     private ArrayList<String> mIdsComenziList;
+    private UserBean mUserBean;
     private ComandaBean mComandaBean;
 
     // url
-    private static String url_change_psw = DisertatieAppConstants.DYNAMIC_URL + "get_all_commands" +
-            ".php";
+    private static String url_change_psw = DisertatieAppConstants.DYNAMIC_URL +
+            "get_all_commands_for_current_user.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -56,9 +59,12 @@ public class PreluariListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preluari_list);
 
+        mListView = (ListView) findViewById(R.id.preluari_list);
         mJParser = new JSONParser();
 
-        mListView = (ListView) findViewById(R.id.preluari_list);
+        Intent intent = getIntent();
+        mUserBean = (UserBean) intent.getExtras().getSerializable(DisertatieAppConstants
+                .USER_INTENT);
 
         // ListView Item Click Listener
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,6 +96,12 @@ public class PreluariListActivity extends Activity {
         new LoadAllComandsAsyncTask().execute();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finishAffinity();
+    }
+
     /**
      * Background Async Task to Load all product by making HTTP Request
      */
@@ -110,6 +122,7 @@ public class PreluariListActivity extends Activity {
 
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id_user_preluare", mUserBean.getId()));
             // getting JSON string from URL
             JSONObject json = mJParser.makeHttpRequest(url_change_psw, "POST", params);
 
@@ -177,7 +190,7 @@ public class PreluariListActivity extends Activity {
 
                     // use your custom layout
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
-                            R.layout.list_item_layout, R.id.label, mIdsComenziList);
+                            R.layout.preluare_list_item_layout, R.id.label, mIdsComenziList);
 
                     mListView.setAdapter(adapter);
 
