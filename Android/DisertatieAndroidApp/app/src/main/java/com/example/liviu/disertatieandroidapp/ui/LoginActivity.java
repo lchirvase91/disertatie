@@ -1,6 +1,7 @@
 package com.example.liviu.disertatieandroidapp.ui;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 import com.example.liviu.disertatieandroidapp.utils.DisertatieAppConstants;
 import com.example.liviu.disertatieandroidapp.utils.JSONParser;
 import com.example.liviu.disertatieandroidapp.R;
-import com.example.liviu.disertatieandroidapp.utils.UserBean;
+import com.example.liviu.disertatieandroidapp.beans.UserBean;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -29,16 +30,21 @@ public class LoginActivity extends Activity {
     private static final String TAG = DisertatieAppConstants.TAG + LoginActivity.class
             .getSimpleName();
 
-    private EditText mUsername;
-    private EditText mPsw;
+    // url
+    private static String url_login = DisertatieAppConstants.DYNAMIC_URL + "login.php";
+
+    // UI
+    private EditText mUsername, mPsw;
     private Button mLoginButton;
+    private ProgressDialog mProgDialog;
+
+    // beans
+    private UserBean mUserBean;
 
     // Creating JSON Parser object
     private JSONParser mJParser;
 
-    // url for login
-    private static String url_login = DisertatieAppConstants.DYNAMIC_URL + "login.php";
-
+    private JSONArray mUser;
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
@@ -48,11 +54,6 @@ public class LoginActivity extends Activity {
     private static final String TAG_USER_PRENUME = "prenume";
     private static final String TAG_USER_TEL = "telefon";
     private static final String TAG_USER_STATUT = "statut";
-
-    // users JSONArray
-    private JSONArray mUser;
-
-    private UserBean mUserBean;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,12 +71,13 @@ public class LoginActivity extends Activity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Loading user in Background Thread
+                // Loading in Background Thread
                 new LoginAsyncTask().execute();
             }
         });
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -90,19 +92,26 @@ public class LoginActivity extends Activity {
         mUsername.requestFocus();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finishAffinity();
-    }
-
     /**
-     * Background Async Task to Load all product by making HTTP Request
+     * Background Async Task to authenticate user by making HTTP Request
      */
     class LoginAsyncTask extends AsyncTask<String, String, String> {
 
         /**
-         * getting All products from url
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgDialog = new ProgressDialog(LoginActivity.this);
+            mProgDialog.setMessage(getString(R.string.loading));
+            mProgDialog.setIndeterminate(false);
+            mProgDialog.setCancelable(false);
+            mProgDialog.show();
+        }
+
+        /**
+         * getting from url
          */
         protected String doInBackground(String... args) {
             String username = mUsername.getText().toString();
@@ -113,14 +122,15 @@ public class LoginActivity extends Activity {
             params.add(new BasicNameValuePair("userlog_username", username));
             params.add(new BasicNameValuePair("userlog_password", psw));
             // getting JSON string from URL
-            JSONObject json = mJParser.makeHttpRequest(url_login, "POST", params);
+            JSONObject json = mJParser.makeHttpRequest(url_login, DisertatieAppConstants.POST,
+                    params);
 
             if (json == null) {
                 Log.d(TAG, "json object is null");
                 return "";
             }
             // Check your log cat for JSON reponse
-            Log.d(TAG, "Display json object: " + json.toString());
+            if (DisertatieAppConstants.DEBUG) Log.d(TAG, "Display json object: " + json.toString());
 
             try {
                 // Checking for SUCCESS TAG
@@ -151,7 +161,7 @@ public class LoginActivity extends Activity {
 
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(TAG, "JSONException " + e.getMessage());
             }
 
             return null;
@@ -161,24 +171,8 @@ public class LoginActivity extends Activity {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String file_url) {
-            // dismiss the dialog after getting all products
-//			mProgDialog.dismiss();
-            // updating UI from Background Thread
-//            runOnUiThread(new Runnable() {
-//                public void run() {
-//                    /**
-//                     * Updating parsed JSON data into ListView
-//                     * */
-//                    ListAdapter adapter = new SimpleAdapter(
-//                            AllProductsActivity.this, productsList,
-//                            R.layout.list_item, new String[] { TAG_PID,
-//                            TAG_NAME},
-//                            new int[] { R.id.pid, R.id.name });
-//                    // updating listview
-//                    setListAdapter(adapter);
-//                }
-//            });
-
+            // dismiss the dialog after getting from url
+            mProgDialog.dismiss();
         }
 
     }

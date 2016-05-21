@@ -1,11 +1,9 @@
-package com.example.liviu.disertatieandroidapp.utils;
+package com.example.liviu.disertatieandroidapp.beans;
 
 import java.io.Serializable;
 
-/**
- * Created by Liviu on 5/19/2016.
- */
-public class ColetBean implements Serializable{
+
+public class ColetBean implements Serializable {
 
     String id;
     String awb;

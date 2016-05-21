@@ -1,6 +1,7 @@
 package com.example.liviu.disertatieandroidapp.ui;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,10 +13,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.liviu.disertatieandroidapp.R;
-import com.example.liviu.disertatieandroidapp.utils.ComandaBean;
+import com.example.liviu.disertatieandroidapp.beans.ComandaBean;
 import com.example.liviu.disertatieandroidapp.utils.DisertatieAppConstants;
 import com.example.liviu.disertatieandroidapp.utils.JSONParser;
-import com.example.liviu.disertatieandroidapp.utils.UserBean;
+import com.example.liviu.disertatieandroidapp.beans.UserBean;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -31,17 +32,25 @@ public class LivrariListActivity extends Activity {
     private static final String TAG = DisertatieAppConstants.TAG + LivrariListActivity.class
             .getSimpleName();
 
-    private ListView mListView;
-    private JSONParser mJParser;
-    private JSONArray mLivrari;
-    private ArrayList<ComandaBean> mComenziList;
-    private ArrayList<String> mIdsComenziList;
-    private UserBean mUserBean;
-    private ComandaBean mComandaBean;
-
     // url
     private static String url_change_psw = DisertatieAppConstants.DYNAMIC_URL +
             "get_all_deliveries_for_current_user.php";
+
+    // UI
+    private ListView mListView;
+    private ProgressDialog mProgDialog;
+
+    // arays
+    private ArrayList<String> mIdsComenziList;
+    private ArrayList<ComandaBean> mComenziList;
+
+    // beans
+    private UserBean mUserBean;
+    private ComandaBean mComandaBean;
+
+    // Creating JSON Parser object
+    private JSONParser mJParser;
+    private JSONArray mLivrari;
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -60,6 +69,7 @@ public class LivrariListActivity extends Activity {
         setContentView(R.layout.activity_livrari_list);
 
         mListView = (ListView) findViewById(R.id.livrari_list);
+
         mJParser = new JSONParser();
 
         Intent intent = getIntent();
@@ -92,21 +102,12 @@ public class LivrariListActivity extends Activity {
 
     public void onResume() {
         super.onResume();
-
-        // Loading user in Background Thread
+        // Loading in Background Thread
         new LoadAllComandsAsyncTask().execute();
-
     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finishAffinity();
-    }
-
 
     /**
-     * Background Async Task to Load all product by making HTTP Request
+     * Background Async Task to Load all commands by making HTTP Request
      */
     class LoadAllComandsAsyncTask extends AsyncTask<String, String, String> {
 
@@ -116,10 +117,15 @@ public class LivrariListActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mProgDialog = new ProgressDialog(LivrariListActivity.this);
+            mProgDialog.setMessage(getString(R.string.loading));
+            mProgDialog.setIndeterminate(false);
+            mProgDialog.setCancelable(false);
+            mProgDialog.show();
         }
 
         /**
-         * getting All products from url
+         * getting from url
          */
         protected String doInBackground(String... args) {
 
@@ -127,13 +133,14 @@ public class LivrariListActivity extends Activity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("id_user_livrare", mUserBean.getId()));
             // getting JSON string from URL
-            JSONObject json = mJParser.makeHttpRequest(url_change_psw, "POST", params);
+            JSONObject json = mJParser.makeHttpRequest(url_change_psw, DisertatieAppConstants.POST,
+                    params);
 
             if (json == null) {
                 Log.e(TAG, "json object is null");
             }
             // Check your log cat for JSON reponse
-            Log.d(TAG, "Display json object: " + json.toString());
+            if (DisertatieAppConstants.DEBUG) Log.d(TAG, "Display json object: " + json.toString());
 
             mIdsComenziList = new ArrayList<String>();
             mComenziList = new ArrayList<ComandaBean>();
@@ -150,7 +157,6 @@ public class LivrariListActivity extends Activity {
                         JSONObject object = mLivrari.getJSONObject(i);
 
                         // Storing each json item in variable
-                        // Storing each json item in variable
                         String id = object.getString(TAG_ID);
                         String nume = object.getString(TAG_NUME);
                         String judet = object.getString(TAG_JUDET);
@@ -159,7 +165,7 @@ public class LivrariListActivity extends Activity {
                         String tel = object.getString(TAG_TEL);
                         String nr_colete = object.getString(TAG_NR_COLETE);
 
-                        mComandaBean = new ComandaBean(id, nume,judet, loc, adresa, tel,
+                        mComandaBean = new ComandaBean(id, nume, judet, loc, adresa, tel,
                                 nr_colete);
                         mIdsComenziList.add(id);
                         mComenziList.add(mComandaBean);
@@ -175,7 +181,7 @@ public class LivrariListActivity extends Activity {
 
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(TAG, "JSONException " + e.getMessage());
             }
 
 
@@ -186,6 +192,8 @@ public class LivrariListActivity extends Activity {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String file_url) {
+            // dismiss the dialog after getting from url
+            mProgDialog.dismiss();
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

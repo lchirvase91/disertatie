@@ -1,6 +1,7 @@
 package com.example.liviu.disertatieandroidapp.ui;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 import com.example.liviu.disertatieandroidapp.utils.DisertatieAppConstants;
 import com.example.liviu.disertatieandroidapp.utils.JSONParser;
 import com.example.liviu.disertatieandroidapp.R;
-import com.example.liviu.disertatieandroidapp.utils.UserBean;
+import com.example.liviu.disertatieandroidapp.beans.UserBean;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -28,20 +29,24 @@ public class ChangePasswordActivity extends Activity {
     private static final String TAG = DisertatieAppConstants.TAG + ChangePasswordActivity.class
             .getSimpleName();
 
-    private EditText mOldPsw;
-    private EditText mNewPsw;
-    private EditText mConfirmNewPsw;
-    private Button mChangePswButton;
+    // url
+    private static String url_change_psw = DisertatieAppConstants.DYNAMIC_URL + "change_psw.php";
 
+    // UI
+    private EditText mOldPsw, mNewPsw, mConfirmNewPsw;
+    private Button mChangePswButton;
+    private ProgressDialog mProgDialog;
+
+    // beans
     private UserBean mUserBean;
+
+    // strings
     private String mOldPswText;
     private String mNewPswText;
     private String mConfirmNewPswText;
 
+    // Creating JSON Parser object
     private JSONParser mJParser;
-
-    // url for login
-    private static String url_change_psw = DisertatieAppConstants.DYNAMIC_URL + "change_psw.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -52,15 +57,15 @@ public class ChangePasswordActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
 
-        Intent intent = getIntent();
-        mUserBean = (UserBean) intent.getExtras().getSerializable("user");
-
-        mJParser = new JSONParser();
-
         mOldPsw = (EditText) findViewById(R.id.old_psw_edittext);
         mNewPsw = (EditText) findViewById(R.id.new_psw_edittext);
         mConfirmNewPsw = (EditText) findViewById(R.id.confirm_newpsw_edittext);
         mChangePswButton = (Button) findViewById(R.id.change_psw_button);
+
+        mJParser = new JSONParser();
+
+        Intent intent = getIntent();
+        mUserBean = (UserBean) intent.getExtras().getSerializable("user");
 
         mChangePswButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +89,7 @@ public class ChangePasswordActivity extends Activity {
                     return;
                 }
 
-                // Loading user in Background Thread
+                // Loading in Background Thread
                 new ChangePswAsyncTask().execute();
 
             }
@@ -92,14 +97,8 @@ public class ChangePasswordActivity extends Activity {
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        finishAffinity();
-    }
-
     /**
-     * Background Async Task to Load all product by making HTTP Request
+     * Background Async Task to change password by making HTTP Request
      */
     class ChangePswAsyncTask extends AsyncTask<String, String, String> {
 
@@ -109,10 +108,15 @@ public class ChangePasswordActivity extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mProgDialog = new ProgressDialog(ChangePasswordActivity.this);
+            mProgDialog.setMessage(getString(R.string.loading));
+            mProgDialog.setIndeterminate(false);
+            mProgDialog.setCancelable(false);
+            mProgDialog.show();
         }
 
         /**
-         * getting All products from url
+         * getting from url
          */
         protected String doInBackground(String... args) {
             // Building Parameters
@@ -121,14 +125,15 @@ public class ChangePasswordActivity extends Activity {
             params.add(new BasicNameValuePair("old_password", mOldPswText));
             params.add(new BasicNameValuePair("new_password", mNewPswText));
             // getting JSON string from URL
-            JSONObject json = mJParser.makeHttpRequest(url_change_psw, "POST", params);
+            JSONObject json = mJParser.makeHttpRequest(url_change_psw, DisertatieAppConstants.POST,
+                    params);
 
             if (json == null) {
                 Log.e(TAG, "json object is null");
                 return "";
             }
             // Check your log cat for JSON reponse
-            Log.d(TAG, "Display json object: " + json.toString());
+            if (DisertatieAppConstants.DEBUG) Log.d(TAG, "Display json object: " + json.toString());
 
             try {
                 // Checking for SUCCESS TAG
@@ -148,7 +153,7 @@ public class ChangePasswordActivity extends Activity {
 
                 }
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.e(TAG, "JSONException " + e.getMessage());
             }
 
             return null;
@@ -158,24 +163,8 @@ public class ChangePasswordActivity extends Activity {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String file_url) {
-            // dismiss the dialog after getting all products
-//			mProgDialog.dismiss();
-            // updating UI from Background Thread
-//            runOnUiThread(new Runnable() {
-//                public void run() {
-//                    /**
-//                     * Updating parsed JSON data into ListView
-//                     * */
-//                    ListAdapter adapter = new SimpleAdapter(
-//                            AllProductsActivity.this, productsList,
-//                            R.layout.list_item, new String[] { TAG_PID,
-//                            TAG_NAME},
-//                            new int[] { R.id.pid, R.id.name });
-//                    // updating listview
-//                    setListAdapter(adapter);
-//                }
-//            });
-
+            // dismiss the dialog after getting from url
+            mProgDialog.dismiss();
         }
 
     }

@@ -34,8 +34,8 @@ if (isset($_POST['id_user']) && isset($_POST['id_colet']) && isset($_POST['data_
 		// check if row inserted or not
 		if ($update1 || $update2 || $update3) {
 			// successfully updated
-			$response["success1"] = 1;
-			$response["message1"] = "Actualizare reusita";
+			$response["success"] = 1;
+			$response["message"] = "Actualizare reusita";
 			
 			$result1 = mysql_query("SELECT COUNT(colet_id) FROM colet, comanda WHERE comanda_id = colet_comanda_id GROUP BY comanda_id HAVING comanda_id = (SELECT colet_comanda_id FROM colet WHERE colet_id = $colet_id) AND COUNT(colet_id) = (SELECT COUNT(*) FROM colet WHERE colet_comanda_id = (SELECT colet_comanda_id FROM colet WHERE colet_id = $colet_id) AND colet_status='in tranzit')");
 			$result2 = mysql_query("SELECT COUNT(colet_id) FROM colet, comanda WHERE comanda_id = colet_comanda_id GROUP BY comanda_id HAVING comanda_id = (SELECT colet_comanda_id FROM colet WHERE colet_id = $colet_id) AND COUNT(colet_id) = (SELECT COUNT(*) FROM colet WHERE colet_comanda_id = (SELECT colet_comanda_id FROM colet WHERE colet_id = $colet_id) AND colet_status='livrat')");
@@ -50,24 +50,24 @@ if (isset($_POST['id_user']) && isset($_POST['id_colet']) && isset($_POST['data_
 			// echoing JSON response
 			echo json_encode($response);
 		} else {
-			$response["success1"] = 0;
-			$response["message1"] = "Actualizare esuata";
+			$response["success"] = 0;
+			$response["message"] = "Actualizare esuata";
 			
 			// echoing JSON response
 			echo json_encode($response);
 		}
     } else {
         // failed to insert row
-        $response["success1"] = 0;
-        $response["message1"] = "Inserare esuata";
+        $response["success"] = 0;
+        $response["message"] = "Inserare esuata";
         
         // echoing JSON response
         echo json_encode($response);
     }
 } else {
     // required field is missing
-    $response["success1"] = 0;
-    $response["message1"] = "Informatii incomplete";
+    $response["success"] = 0;
+    $response["message"] = "Informatii incomplete";
 
     // echoing JSON response
     echo json_encode($response);

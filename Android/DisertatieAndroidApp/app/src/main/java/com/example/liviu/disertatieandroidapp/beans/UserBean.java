@@ -1,7 +1,6 @@
-package com.example.liviu.disertatieandroidapp.utils;
+package com.example.liviu.disertatieandroidapp.beans;
 
 import java.io.Serializable;
-
 
 public class UserBean implements Serializable {
 
