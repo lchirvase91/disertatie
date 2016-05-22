@@ -20,4 +20,12 @@
     <servlet-name>LogoutServlet</servlet-name>
     <url-pattern>/LogoutServlet</url-pattern>
   </servlet-mapping>
-  </web-app>
+   <servlet>
+    <servlet-name>EditProfileServlet</servlet-name>
+    <servlet-class>profileOperations.EditProfileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditProfileServlet</servlet-name>
+    <url-pattern>/EditProfileServlet</url-pattern>
+  </servlet-mapping>
+</web-app>

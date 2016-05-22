@@ -4,14 +4,12 @@
 <!DOCTYPE html>
 <HTML>
 <head>
-<title>Pagina Login - Monitorizarea activitatii studentilor de
-	la Specializarea CALCULATOARE</title>
-<link rel="shortcut icon" href="images/top_logo_icon.png"
+<title>Sistem de gestiune si monitorizare pentru o firma de curierat
+</title>
+<link rel="shortcut icon" href="images/app_icon_32.png"
 	type="image/x-icon">
-<link href="css/main_page.css" rel="stylesheet" type="text/css" />
+<link href="css/disertatie_style.css" rel="stylesheet" type="text/css" />
 <link href="css/ui-lightness/jquery-ui-1.10.4.css" rel="stylesheet">
-<script src="js/jquery.1.10.2.min.js"></script>
-<script src="js/jquery-ui-1.10.4.min.js"></script>
 <script>
 	function showLoadBar() {
 		document.getElementById('loadBar').style.display = 'block';
@@ -25,7 +23,9 @@
 		<div id="left"></div>
 		<div id="right"></div>
 		<div id="center">
-			<img id="title" src="images/app_logo.png" />
+			<img id="header_left_title" src="images/sprint_image.png" />
+			<img id="header_title" src="images/app_icon_100.png" />
+			<img id="header_right_title" src="images/curier_image.png" />
 		</div>
 	</div>
 
@@ -36,7 +36,7 @@
 					<div class="logo" style="float: left;"></div>
 					<div style="padding-top: 5px; float: right; max-width: 320px;">
 						<div
-							style="float: left; padding: 4px 10px 4px 0px; font-weight: bold; font-size: 11px; color: #0B3B17;">Autentificare</div>
+							style="float: left; padding: 4px 10px 4px 0px; font-weight: bold; font-size: 11px; color: #000000;">Autentificare</div>
 						<div style="float: right; padding: 4px 10px 4px 0px;">
 							<input type="text" name="uname" id="uname" placeholder="User"
 								size="40">
@@ -54,7 +54,7 @@
 				</div>
 			</div>
 		</form>
-		
+
 		<div style="position: absolute; left: 0%; top: 40%;">
 			<img id="left_side" src="images/left_side.png" />
 		</div>
@@ -62,7 +62,7 @@
 		<div style="position: absolute; right: 0%; top: 40%;">
 			<img id="right_side" src="images/right_side.png" />
 		</div>
-		
+
 		<div style="position: absolute; left: 10%; top: 80%;">
 			<input class="button" type="button" value="Cheama curier"
 				onclick="location.href='avizier.jsp'">
@@ -75,7 +75,11 @@
 	<div id="bottom_div">
 		<div id="left"></div>
 		<div id="right"></div>
-		<div id="center"></div>
+		<div id="center">
+			<div id="footer">
+				<img id="footer_title" src="images/app_icon_50.png"/>Copyright(C) 2016
+			</div>
+		</div>
 	</div>
 </body>
 </HTML>
