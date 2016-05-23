@@ -20,13 +20,9 @@
 
 
 	<div id="top_div">
-		<div id="left"></div>
-		<div id="right"></div>
-		<div id="center">
-			<img id="header_left_title" src="images/sprint_image.png" />
-			<img id="header_title" src="images/app_icon_100.png" />
-			<img id="header_right_title" src="images/curier_image.png" />
-		</div>
+		<img id="header_left_title" src="images/sprint_image.png" />
+		<img id="header_title" src="images/app_icon_100.png" />
+		<img id="header_right_title" src="images/curier_image.png" />
 	</div>
 
 	<div id="middle_div">
@@ -36,7 +32,7 @@
 					<div class="logo" style="float: left;"></div>
 					<div style="padding-top: 5px; float: right; max-width: 320px;">
 						<div
-							style="float: left; padding: 4px 10px 4px 0px; font-weight: bold; font-size: 11px; color: #000000;">Autentificare</div>
+							style="float: left; padding: 4px 10px 4px 0px; font-weight: bold; font-size: 11px; color: #ffffff;">Autentificare</div>
 						<div style="float: right; padding: 4px 10px 4px 0px;">
 							<input type="text" name="uname" id="uname" placeholder="User"
 								size="40">
@@ -64,21 +60,18 @@
 		</div>
 
 		<div style="position: absolute; left: 10%; top: 80%;">
-			<input class="button" type="button" value="Cheama curier"
-				onclick="location.href='avizier.jsp'">
+			<input class="big_button" type="button" value="Cheama curier"
+				onclick="location.href='cheamaCurier.jsp'">
 		</div>
 		<div style="position: absolute; right: 10%; top: 80%;">
-			<input class="button" type="button" value="Verifica AWB"
+			<input class="big_button" type="button" value="Verifica AWB"
 				onclick="location.href='avizier.jsp'">
 		</div>
 	</div>
 	<div id="bottom_div">
-		<div id="left"></div>
-		<div id="right"></div>
-		<div id="center">
-			<div id="footer">
-				<img id="footer_title" src="images/app_icon_50.png"/>Copyright(C) 2016
-			</div>
+		<div id="footer">
+			<img id="footer_title" src="images/app_icon_50.png" />Copyright(C)
+			2016
 		</div>
 	</div>
 </body>

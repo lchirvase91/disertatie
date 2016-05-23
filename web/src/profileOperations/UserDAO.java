@@ -31,11 +31,13 @@ public class UserDAO {
 			boolean more = rs.next();
 
 			if (more) {
+				String uid = rs.getString("user_id");
 				String nume = rs.getString("user_nume");
 				String prenume = rs.getString("user_prenume");
 				StringBuilder user = new StringBuilder(nume).append(" ").append(prenume);
 				System.out.println("Welcome " + user.toString() + "!");
 				bean.setConnection(currentConnection);
+				bean.setUid(uid);
 				bean.setNume(nume);
 				bean.setPrenume(prenume);
 				bean.setValid(true);

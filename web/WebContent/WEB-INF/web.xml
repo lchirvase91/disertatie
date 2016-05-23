@@ -28,4 +28,12 @@
     <servlet-name>EditProfileServlet</servlet-name>
     <url-pattern>/EditProfileServlet</url-pattern>
   </servlet-mapping>
+   <servlet>
+    <servlet-name>CheamaCurierServlet</servlet-name>
+    <servlet-class>publicSide.CheamaCurierServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CheamaCurierServlet</servlet-name>
+    <url-pattern>/CheamaCurierServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

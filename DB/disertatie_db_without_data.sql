@@ -47,7 +47,6 @@ CREATE TABLE IF NOT EXISTS `disertatie_db`.`comanda` (
   `comanda_id` INT NOT NULL AUTO_INCREMENT,
   `comanda_nr_colete` INT NOT NULL,
   `comanda_greutate` INT NOT NULL,
-  `comanda_plata` VARCHAR(30) NOT NULL,
   `comanda_data_comanda` DATE NOT NULL,
   `comanda_data_preluare` DATETIME NULL,
   `comanda_data_expediere` DATETIME NULL,

@@ -5,7 +5,7 @@ import java.sql.*;
 public class UserBean {
 
 	private Connection conn;
-	private int uid;
+	private String uid;
 	private String username;
 	private String password;
 	private String nume;
@@ -22,11 +22,11 @@ public class UserBean {
 		}
 	}
 
-	public int getUid() {
+	public String getUid() {
 		return uid;
 	}
 
-	public void setUid(int uid) {
+	public void setUid(String uid) {
 		this.uid = uid;
 	}
 

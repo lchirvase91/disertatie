@@ -33,6 +33,21 @@
 			<li><img
 				style="height: auto; width: auto; max-width: 35px; max-height: 35px;"
 				src="images/app_icon_32.png"></li>
+
+			<li class='has-sub'><a href='#Comenzi'><span>Comenzi</span></a>
+				<ul>
+					<li><a href="#ComenziNepreluate"
+						onclick="includeFile('#ComenziNepreluate');"><span>Comenzi
+								nepreluate</span></a></li>
+					<li><a href="#ComenziPreluate"
+						onclick="includeFile('#ComenziPreluate');"><span>Comenzi
+								preluate</span></a></li>
+					<li class='last'>
+					<li><a href="ComenziInCursDeLivrare"
+						onclick="includeFile('#ComenziInCursDeLivrare');"><span>Comenzi
+								in curs de livrare</span></a></li>
+				</ul></li>
+
 			<li style="float: right;" class='has-sub'><a href='#'><span><img
 						style="vertical-align: middle; height: auto; width: auto; max-width: 20px; max-height: 20px;"
 						src="images/user_photo.png"> <%=currentUser.getUsername()%>
@@ -46,8 +61,10 @@
 		</ul>
 	</div>
 
-	<div id="SchimbareParola" class="P"><%@ include
-			file="schimbareParola.jsp"%></div>
+	<div id="SchimbareParola" class="P"><%@ include	file="schimbareParola.jsp"%></div>
+	<div id="ComenziPreluate" class="P"><%@ include file="comenziPreluate.jsp"%></div>
+	<div id="ComenziNepreluate" class="P"><%@ include file="comenziNepreluate.jsp"%></div>
+	<div id="ComenziInCursDeLivrare" class="P"><%@ include file="comenziInCursDeLivrare.jsp"%></div>
 
 
 </body>

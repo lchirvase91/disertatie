@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 	<div class="wrapper">
 		<div class="profil_privat" align="center">
-			<form name="EditProfilForm" action="EditProfileServlet" method="post">
+			<form name="EditProfilForm" action="EditProfileServlet" method="get">
 			<table>
 				<tr>
 					<td></td>
