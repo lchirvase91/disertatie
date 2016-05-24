@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="javaBeans.UserBean"%>
+<%@ page import="java.sql.*"%>
 <%
 	UserBean currentUser = ((UserBean) (session
 			.getAttribute("currentSessionUser")));
@@ -27,6 +28,14 @@
 </script>
 </head>
 <body onload="hideDisplay()">
+<%
+Connection conn = null;
+PreparedStatement pst1 = null, pst2 = null;
+ResultSet rs1 = null, rs2 = null;
+
+%>
+
+
 	<div id='cssmenu'>
 
 		<ul>
@@ -43,10 +52,13 @@
 						onclick="includeFile('#ComenziPreluate');"><span>Comenzi
 								preluate</span></a></li>
 					<li class='last'>
-					<li><a href="ComenziInCursDeLivrare"
+					<li><a href="#ComenziInCursDeLivrare"
 						onclick="includeFile('#ComenziInCursDeLivrare');"><span>Comenzi
 								in curs de livrare</span></a></li>
 				</ul></li>
+				
+				<li class='has-sub'><a href='GenerareEtichetaServlet'><span>Test</span></a>
+				</li>
 
 			<li style="float: right;" class='has-sub'><a href='#'><span><img
 						style="vertical-align: middle; height: auto; width: auto; max-width: 20px; max-height: 20px;"

@@ -36,4 +36,20 @@
     <servlet-name>CheamaCurierServlet</servlet-name>
     <url-pattern>/CheamaCurierServlet</url-pattern>
   </servlet-mapping>
+   <servlet>
+    <servlet-name>GenerareEtichetaServlet</servlet-name>
+    <servlet-class>generareEtichetaColet.GenerareEtichetaServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GenerareEtichetaServlet</servlet-name>
+    <url-pattern>/GenerareEtichetaServlet</url-pattern>
+  </servlet-mapping>
+   <servlet>
+    <servlet-name>GenerarePDF</servlet-name>
+    <servlet-class>generareEtichetaColet.GenerarePDF</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GenerarePDF</servlet-name>
+    <url-pattern>/GenerarePDF</url-pattern>
+  </servlet-mapping>
 </web-app>

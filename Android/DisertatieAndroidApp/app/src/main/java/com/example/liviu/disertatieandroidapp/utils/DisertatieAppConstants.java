@@ -7,7 +7,7 @@ public class DisertatieAppConstants {
 
     public static final boolean DEBUG = true;
 
-    public static final String DYNAMIC_URL = "http://192.168.0.100/disertatie_php/";
+    public static final String DYNAMIC_URL = "http://disertatie_php/";
 
     public static final String USER_INTENT = "user";
     public static final String COLET_INTENT = "colet";

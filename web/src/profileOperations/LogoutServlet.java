@@ -22,6 +22,10 @@ public class LogoutServlet extends HttpServlet {
 		UserBean currentUser = (UserBean) (session
 				.getAttribute("currentSessionUser"));
 
+		if (currentUser == null) {
+			response.sendRedirect("index.jsp");
+		}
+		
 		if (currentUser.isValid()) {
 			try {
 				currentUser.closeConnection();
