@@ -1,11 +1,12 @@
 package generareEtichetaColet;
 
 import java.io.IOException;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -65,6 +66,13 @@ public class GenerarePDF extends HttpServlet {
 //			pst1.setInt(7, anStudiu);
 //			rs = pst1.executeQuery();
 			
+			
+			
+			
+			
+//			int idAvizier = Integer.parseInt(request.getParameter("id"));
+//			
+//			System.out.println("iddddddd ----- " + idAvizier);
 			Document document = new Document();
 //			for (int i =0 ; i < 3; i++) {
 				PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
@@ -133,6 +141,9 @@ public class GenerarePDF extends HttpServlet {
 //				conn = null;
 //			}
 //		}
+		
+		System.out.println("ZZZZZZZZZZZZZZZZZ ---" + getCurrentDateTime());
+		
 	}
 
 	protected void doPost(HttpServletRequest request,
@@ -140,4 +151,12 @@ public class GenerarePDF extends HttpServlet {
 		// TODO Auto-generated method stub
 	}
 
+	private static String getCurrentDateTime() {
+		
+		final String DATE_FORMAT_NOW = "yyMMddHHmmss";
+		
+		return String.valueOf(Calendar.getInstance().getTimeInMillis());
+
+    }
+	
 }

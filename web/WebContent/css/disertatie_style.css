@@ -1,50 +1,51 @@
 body {
-    font-family: Verdana, Tahoma, Arial, "Trebuchet MS", Sans-Serif, Georgia, Courier, "Times New Roman", Serif;
-    font-size: 8pt;
-	background: #ffffff; 
+	font-family: Verdana, Tahoma, Arial, "Trebuchet MS", Sans-Serif, Georgia,
+		Courier, "Times New Roman", Serif;
+	font-size: 8pt;
+	background: #ffffff;
 	margin: 0;
-    padding: 0;
+	padding: 0;
 	height: 100%;
 }
 
-#top_div{
-	height:80px;
+#top_div {
+	height: 80px;
 }
 
-#header_title{
+#header_title {
 	position: absolute;
-   	left: 47%;
+	left: 47%;
 }
 
-#header_left_title{
-	position: absolute;
-	top: 2%;
-   	left: 35%;
-}
-
-#header_right_title{
+#header_left_title {
 	position: absolute;
 	top: 2%;
-   	right: 35%;
+	left: 35%;
+}
+
+#header_right_title {
+	position: absolute;
+	top: 2%;
+	right: 35%;
 }
 
 #middle_div {
-    margin:0 auto;
-    overflow:auto;
-    padding:120px 0;
+	margin: 0 auto;
+	overflow: auto;
+	padding: 120px 0;
 }
 
-#bottom_div{
-	position:absolute;
-    bottom:0%;
-    height:60px;
-    width:100%;
+#bottom_div {
+	position: absolute;
+	bottom: 0%;
+	height: 60px;
+	width: 100%;
 }
 
 #footer {
-    line-height:60px;
-    margin:0 auto;
-    text-align:center;
+	line-height: 60px;
+	margin: 0 auto;
+	text-align: center;
 }
 
 .wrapper {
@@ -55,7 +56,7 @@ body {
 	position: relative;
 }
 
-.profil_public{
+.profil_public {
 	width: 500px;
 	height: 800px;
 	margin: 0 auto;
@@ -65,11 +66,11 @@ body {
 	-webkit-box-shadow: 0 0 10px 5px #000;
 	box-shadow: 0 0 10px 5px #000;
 	-webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
-.profil_privat{
+.profil_privat {
 	width: 300px;
 	height: 210px;
 	margin: 0 auto;
@@ -79,15 +80,15 @@ body {
 	-webkit-box-shadow: 0 0 10px 5px #000;
 	box-shadow: 0 0 10px 5px #000;
 	-webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
 .logo {
-    width: 150px;
-    height: 140px;
+	width: 150px;
+	height: 140px;
 	margin: 2px 2px 2px 5px;
-    background: url('../images/app_icon_100.png') no-repeat center center;
+	background: url('../images/app_icon_100.png') no-repeat center center;
 }
 
 .main {
@@ -100,31 +101,33 @@ body {
 	-webkit-box-shadow: 0 0 10px 5px #000;
 	box-shadow: 0 0 10px 5px #000;
 	-webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 
 .clearfix:after {
-	content:".";
-	display:block;
-	height:0;
-	clear:both;
-	visibility:hidden;
-	overflow:hidden;
-	float:none;
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	overflow: hidden;
+	float: none;
 }
 
 .clearfix {
-	display:block;
+	display: block;
 }
 
 a:link, a:visited {
 	text-decoration: none;
 	font-weight: bold;
-	color: #ffffff; 
+	color: #ffffff;
 }
 
-a:hover { color: #E0E0E0; }
+a:hover {
+	color: #E0E0E0;
+}
 
 input {
 	font-family: tahoma;
@@ -141,37 +144,130 @@ input:focus, input:hover {
 	border: 1px solid #0099FF;
 }
 
-input.btn{background:url('../images/btn.gif');background-repeat:no-repeat;background-color:transparent;background-position:0 0;width:70px;height:20px;padding: 2px 0px 4px 0px;font-size:7pt;border:none;cursor:pointer;color:#555!important;}
-input.btn:hover{background:url('../images/btn.gif');background-repeat:no-repeat;background-color:transparent;background-position:0 -20px;width:70px;height:20px;padding: 2px 0px 4px 0px;font-size:7pt;border:none;cursor:pointer;color:#fff!important;}
+input.btn {
+	background: url('../images/btn.gif');
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-position: 0 0;
+	width: 70px;
+	height: 20px;
+	padding: 2px 0px 4px 0px;
+	font-size: 7pt;
+	border: none;
+	cursor: pointer;
+	color: #555 !important;
+}
 
-input#uname, input#upassword{
+input.btn:hover {
+	background: url('../images/btn.gif');
+	background-repeat: no-repeat;
+	background-color: transparent;
+	background-position: 0 -20px;
+	width: 70px;
+	height: 20px;
+	padding: 2px 0px 4px 0px;
+	font-size: 7pt;
+	border: none;
+	cursor: pointer;
+	color: #fff !important;
+}
+
+input#uname, input#upassword {
 	padding-left: 20px;
 }
+
 input#uname {
 	background: #ffffff url('../images/username.png') 4px center no-repeat;
 }
+
 input#upassword {
 	background: #ffffff url('..//images/password.png') 4px center no-repeat;
 }
 
 input {
-    font-family: tahoma;
-    font-size: 9pt;
-    background: #ffffff;
-    padding: 4px 4px;
-    border: 1px solid #e2e2e2;
-    max-width: 280px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+	font-family: tahoma;
+	font-size: 9pt;
+	background: #ffffff;
+	padding: 4px 4px;
+	border: 1px solid #e2e2e2;
+	max-width: 280px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
 }
 
-.big_button { border-top: 1px solid #000000; background: #d8dadb; background: -webkit-gradient(linear, left top, left bottom, from(#e1e4e6), to(#d8dadb)); background: -moz-linear-gradient(top, #e1e4e6, #d8dadb); width:600px;height:50px;padding: 9px 18px; -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0; -moz-box-shadow: rgba(0,0,0,1) 0 1px 0; box-shadow: rgba(0,0,0,1) 0 1px 0; text-shadow: rgba(0,0,0,4) 0 1px 0; color: #000000; font-size: 24px; font-family: Georgia, serif; text-decoration: none; vertical-align: middle; } 
-.big_button:hover { border-color: #CEF6CE; background: #CEF6CE; color: #000000; width:600px;height:50px; } 
-.big_button:active { border-color: #CEF6CE; background: #CEF6CE; width:600px;height:50px; }
+.big_button {
+	border-top: 1px solid #000000;
+	background: #d8dadb;
+	background: -webkit-gradient(linear, left top, left bottom, from(#e1e4e6),
+		to(#d8dadb));
+	background: -moz-linear-gradient(top, #e1e4e6, #d8dadb);
+	width: 600px;
+	height: 50px;
+	padding: 9px 18px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: rgba(0, 0, 0, 1) 0 1px 0;
+	-moz-box-shadow: rgba(0, 0, 0, 1) 0 1px 0;
+	box-shadow: rgba(0, 0, 0, 1) 0 1px 0;
+	text-shadow: rgba(0, 0, 0, 4) 0 1px 0;
+	color: #000000;
+	font-size: 24px;
+	font-family: Georgia, serif;
+	text-decoration: none;
+	vertical-align: middle;
+}
 
-.small_button { border-top: 1px solid #000000; background: #d8dadb; background: -webkit-gradient(linear, left top, left bottom, from(#e1e4e6), to(#d8dadb)); background: -moz-linear-gradient(top, #e1e4e6, #d8dadb); width:250px;height:50px;padding: 9px 18px; -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0; -moz-box-shadow: rgba(0,0,0,1) 0 1px 0; box-shadow: rgba(0,0,0,1) 0 1px 0; text-shadow: rgba(0,0,0,4) 0 1px 0; color: #000000; font-size: 24px; font-family: Georgia, serif; text-decoration: none; vertical-align: middle; } 
-.small_button:hover { border-color: #CEF6CE; background: #CEF6CE; color: #000000; width:250px;height:50px; } 
-.small_button:active { border-color: #CEF6CE; background: #CEF6CE; width:250px;height:50px; }
+.big_button:hover {
+	border-color: #CEF6CE;
+	background: #CEF6CE;
+	color: #000000;
+	width: 600px;
+	height: 50px;
+}
 
+.big_button:active {
+	border-color: #CEF6CE;
+	background: #CEF6CE;
+	width: 600px;
+	height: 50px;
+}
 
+.small_button {
+	border-top: 1px solid #000000;
+	background: #d8dadb;
+	background: -webkit-gradient(linear, left top, left bottom, from(#e1e4e6),
+		to(#d8dadb));
+	background: -moz-linear-gradient(top, #e1e4e6, #d8dadb);
+	width: 250px;
+	height: 50px;
+	padding: 9px 18px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: rgba(0, 0, 0, 1) 0 1px 0;
+	-moz-box-shadow: rgba(0, 0, 0, 1) 0 1px 0;
+	box-shadow: rgba(0, 0, 0, 1) 0 1px 0;
+	text-shadow: rgba(0, 0, 0, 4) 0 1px 0;
+	color: #000000;
+	font-size: 24px;
+	font-family: Georgia, serif;
+	text-decoration: none;
+	vertical-align: middle;
+}
+
+.small_button:hover {
+	border-color: #CEF6CE;
+	background: #CEF6CE;
+	color: #000000;
+	width: 250px;
+	height: 50px;
+}
+
+.small_button:active {
+	border-color: #CEF6CE;
+	background: #CEF6CE;
+	width: 250px;
+	height: 50px;
+}

@@ -5,7 +5,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Random;
 
 import javaBeans.ClientBean;
 import javaBeans.ComandaBean;
@@ -20,10 +23,10 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.BarcodeQRCode;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -37,34 +40,65 @@ public class GenerareEtichetaServlet extends HttpServlet {
 		super();
 	}
 	
-	private static Font FONT1 = new Font(Font.FontFamily.TIMES_ROMAN, 18);
+	private static Font FONT1 = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
 	private static Font FONT2 = new Font(Font.FontFamily.TIMES_ROMAN, 15);
 	private static Font FONT3 = new Font(Font.FontFamily.TIMES_ROMAN, 12);
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
+		String comandaId = request.getParameter("comanda_id");
+		
+		
 		Connection conn = null;
-		PreparedStatement pst = null;
-		ResultSet rs = null;
+		PreparedStatement pst1 = null, pst2 = null, pst3 = null;
+		ResultSet rs1 = null, rs2 = null;
 		try {
 			conn = ConnectionManager.getConnection();
-			String sql = "select exp.client_nume, exp.client_judet, exp.client_localitate, exp.client_adresa, exp.client_telefon, exp.client_email, dest.client_nume, dest.client_judet, dest.client_localitate, dest.client_adresa, dest.client_telefon, dest.client_email, comanda_nr_colete, comanda_greutate, comanda_observatii from client exp, client dest, comanda, colet where exp.client_id = comanda_exp_id and dest.client_id = comanda_dest_id and comanda_id = colet_comanda_id and comanda_id = ?";
-			pst = conn.prepareStatement(sql);
-			pst.setString(1, "2");
-			rs = pst.executeQuery();
+			String select1 = "select colet_id, count(*) from colet where colet_comanda_id = ? group by colet_id";
+			pst1 = conn.prepareStatement(select1);
+			pst1.setString(1, comandaId);
+			rs1 = pst1.executeQuery();
+			while (rs1.next()) {
+				
+				String awb = String.valueOf(Calendar.getInstance().getTimeInMillis());
+				
+				String update1 = "update colet set colet_awb = ? where colet_comanda_id = ? and colet_id = ?";
+				String update2 = "update colet set colet_status = 'procesat' where colet_comanda_id = ? and colet_id = ?";
+				pst2 = conn.prepareStatement(update1);
+				pst2.setString(1, awb);
+				pst2.setString(2, comandaId);
+				pst2.setString(3, rs1.getString("colet_id"));
+				int result = pst2.executeUpdate();
+				if (result > 0) {
+					pst2 = conn.prepareStatement(update2);
+					pst2.setString(1, comandaId);
+					pst2.setString(2, rs1.getString("colet_id"));
+					pst2.executeUpdate();
+				}
+			}
+			
+			
+			
+			String select2 = "select colet_awb, exp.client_nume, exp.client_judet, exp.client_localitate, exp.client_adresa, exp.client_telefon, exp.client_email, dest.client_nume, dest.client_judet, dest.client_localitate, dest.client_adresa, dest.client_telefon, dest.client_email, comanda_nr_colete, comanda_greutate, comanda_observatii from client exp, client dest, comanda, colet where exp.client_id = comanda_exp_id and dest.client_id = comanda_dest_id and comanda_id = colet_comanda_id and comanda_id = ?";
+			pst3 = conn.prepareStatement(select2);
+			pst3.setString(1, comandaId);
+			rs2 = pst3.executeQuery();
 			ClientBean exp = null;
 			ClientBean dest = null;
 			ComandaBean comanda = null;
-			ArrayList<ComandaBean> listaColete = new ArrayList();
-			while (rs.next()) {
-				exp = new ClientBean(rs.getString("exp.client_nume"), rs.getString("exp.client_judet"), rs.getString("exp.client_localitate"), rs.getString("exp.client_adresa"), rs.getString("exp.client_telefon"), rs.getString("exp.client_email"));
-				dest = new ClientBean(rs.getString("dest.client_nume"), rs.getString("dest.client_judet"), rs.getString("dest.client_localitate"), rs.getString("dest.client_adresa"), rs.getString("dest.client_telefon"), rs.getString("dest.client_email"));
-				comanda = new ComandaBean (exp, dest, rs.getString("comanda_nr_colete"), rs.getString("comanda_greutate"), rs.getString("comanda_observatii"));
-				listaColete.add(comanda);
+			ArrayList<ComandaBean> listaComenzi = new ArrayList();
+			while (rs2.next()) {
+				exp = new ClientBean(rs2.getString("exp.client_nume"), rs2.getString("exp.client_judet"), rs2.getString("exp.client_localitate"), rs2.getString("exp.client_adresa"), rs2.getString("exp.client_telefon"), rs2.getString("exp.client_email"));
+				dest = new ClientBean(rs2.getString("dest.client_nume"), rs2.getString("dest.client_judet"), rs2.getString("dest.client_localitate"), rs2.getString("dest.client_adresa"), rs2.getString("dest.client_telefon"), rs2.getString("dest.client_email"));
+				comanda = new ComandaBean (exp, dest, rs2.getString("comanda_nr_colete"), rs2.getString("comanda_greutate"), rs2.getString("comanda_observatii"));
+				comanda.setAwb(rs2.getString("colet_awb"));
+				listaComenzi.add(comanda);
 			}
+			
 
 			Document document = new Document(new Rectangle(600, 400));
-			for (ComandaBean colet : listaColete) {
+			for (ComandaBean colet : listaComenzi) {
 				
 				PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
 				document.open();
@@ -74,6 +108,9 @@ public class GenerareEtichetaServlet extends HttpServlet {
 				table.setWidthPercentage(100);
 				int[] columnWidths = { 25, 25, 25, 25 };
 				table.setWidths(columnWidths);
+				PdfPCell cellAWB = new PdfPCell(new Phrase("AWB: " + colet.getAwb(), FONT1));
+				cellAWB.setFixedHeight(30f);
+				cellAWB.setColspan(4);
 				PdfPCell cell1 = new PdfPCell(new Phrase("EXPEDITOR:", FONT1));
 				PdfPCell cell2 = new PdfPCell(new Phrase("DESTINATAR:", FONT1));
 				PdfPCell cell3 = new PdfPCell(new Phrase("DETALII COMANDA:", FONT1));
@@ -82,10 +119,12 @@ public class GenerareEtichetaServlet extends HttpServlet {
 				cell2.setHorizontalAlignment(Element.ALIGN_LEFT);
 				cell3.setHorizontalAlignment(Element.ALIGN_LEFT);
 				cell4.setHorizontalAlignment(Element.ALIGN_CENTER);
+				cellAWB.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				cell1.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				cell2.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				cell3.setVerticalAlignment(Element.ALIGN_MIDDLE);
 				cell4.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				table.addCell(cellAWB);
 				table.addCell(cell1);
 				table.addCell(cell2);
 				table.addCell(cell3);
@@ -94,7 +133,7 @@ public class GenerareEtichetaServlet extends HttpServlet {
 				
 				Phrase phrase = new Phrase();
 				phrase.add(new Chunk("Nume: \n\n",  FONT3));
-				phrase.add(new Chunk(colet.getDestinatar().getNume(), FONT2));
+				phrase.add(new Chunk(colet.getExpeditor().getNume(), FONT2));
 				table.addCell(phrase);
 					
 				phrase = new Phrase();
@@ -104,12 +143,13 @@ public class GenerareEtichetaServlet extends HttpServlet {
 				
 				phrase = new Phrase();
 				phrase.add(new Chunk("Colete: \n\n",  FONT3));
-				phrase.add(new Chunk((listaColete.indexOf(colet) + 1) + " / " + listaColete.size(), FONT2));
+				phrase.add(new Chunk((listaComenzi.indexOf(colet) + 1) + " / " + listaComenzi.size(), FONT2));
 				PdfPCell cell = new PdfPCell(phrase);
 				cell.setRowspan(2);
 				table.addCell(cell);
 				
 				cell = new PdfPCell(new Phrase(""));
+				generateQRCode(cell, colet.getAwb());
 				cell.setRowspan(6);
 				table.addCell(cell);
 				
@@ -196,6 +236,7 @@ public class GenerareEtichetaServlet extends HttpServlet {
 				document.add(table);
 				
 				document.newPage();
+				
 
 			}
 			document.close();
@@ -206,13 +247,25 @@ public class GenerareEtichetaServlet extends HttpServlet {
 		} finally {
 			try {
 				
-			if (rs != null) {
-				rs.close();
-				rs = null;
+			if (rs1 != null) {
+				rs1.close();
+				rs1 = null;
 			}
-			if (pst != null) {
-				pst.close();
-				pst = null;
+			if (rs2 != null) {
+				rs2.close();
+				rs2 = null;
+			}
+			if (pst1 != null) {
+				pst1.close();
+				pst1 = null;
+			}
+			if (pst2 != null) {
+				pst2.close();
+				pst2 = null;
+			}
+			if (pst3 != null) {
+				pst3.close();
+				pst3 = null;
 			}
 			if (conn != null) {
 					conn.close();
@@ -229,4 +282,16 @@ public class GenerareEtichetaServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 	}
 
+	private void generateQRCode(PdfPCell cell, String content) {
+
+		BarcodeQRCode qrcode = new BarcodeQRCode(content, 1, 1, null);
+		try {
+			Image qrcodeImage = qrcode.getImage();
+			cell.addElement(qrcodeImage);
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 }

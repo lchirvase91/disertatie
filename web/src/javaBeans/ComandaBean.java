@@ -1,7 +1,9 @@
 package javaBeans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import javaBeans.ColetBean;
 
 public class ComandaBean implements Serializable {
 
@@ -12,6 +14,7 @@ public class ComandaBean implements Serializable {
 	private String nr_colete;
 	private String greutate;
 	private String observatii;
+	private String awb;
 	
 	public ComandaBean() {
 		super();
@@ -28,6 +31,14 @@ public class ComandaBean implements Serializable {
 	}
 
 	
+	public String getAwb() {
+		return awb;
+	}
+
+	public void setAwb(String awb) {
+		this.awb = awb;
+	}
+
 	public String getId_comanda() {
 		return id_comanda;
 	}

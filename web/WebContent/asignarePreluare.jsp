@@ -5,8 +5,8 @@
 
 <%
 	String comandaId = request.getParameter("comanda_id");
-	String user_Id = request.getParameter("user_id");
-	System.out.println(comandaId + "   " + user_Id);
+	String userId = request.getParameter("user_id");
+	System.out.println(comandaId + "   " + userId);
 
 	Connection conn = null;
 	PreparedStatement pst = null;
@@ -14,7 +14,7 @@
 		conn = ConnectionManager.getConnection();
 		String sql = "update comanda set comanda_asignare = ? where comanda_id = ?";
 		pst = conn.prepareStatement(sql);
-		pst.setString(1, user_Id);
+		pst.setString(1, userId);
 		pst.setString(2, comandaId);
 		pst.executeUpdate();
 	} catch (SQLException e) {
