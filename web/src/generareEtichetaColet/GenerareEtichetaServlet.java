@@ -63,17 +63,15 @@ public class GenerareEtichetaServlet extends HttpServlet {
 				
 				String awb = String.valueOf(Calendar.getInstance().getTimeInMillis());
 				
-				String update1 = "update colet set colet_awb = ? where colet_comanda_id = ? and colet_id = ?";
-				String update2 = "update colet set colet_status = 'procesat' where colet_comanda_id = ? and colet_id = ?";
+				String update1 = "update colet set colet_awb = ? where colet_id = ?";
+				String update2 = "update colet set colet_status = 'procesat' where colet_id = ?";
 				pst2 = conn.prepareStatement(update1);
 				pst2.setString(1, awb);
-				pst2.setString(2, comandaId);
-				pst2.setString(3, rs1.getString("colet_id"));
+				pst2.setString(2, rs1.getString("colet_id"));
 				int result = pst2.executeUpdate();
 				if (result > 0) {
 					pst2 = conn.prepareStatement(update2);
-					pst2.setString(1, comandaId);
-					pst2.setString(2, rs1.getString("colet_id"));
+					pst2.setString(1, rs1.getString("colet_id"));
 					pst2.executeUpdate();
 				}
 			}

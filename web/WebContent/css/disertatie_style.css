@@ -70,6 +70,20 @@ body {
 	border-radius: 5px;
 }
 
+.profil_public_awb {
+	width: 500px;
+	height: 400px;
+	margin: 0 auto;
+	color: #FFFFFF;
+	background: #1f1f1f;
+	-moz-box-shadow: 0 0 10px 5px #000;
+	-webkit-box-shadow: 0 0 10px 5px #000;
+	box-shadow: 0 0 10px 5px #000;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
 .profil_privat {
 	width: 300px;
 	height: 210px;

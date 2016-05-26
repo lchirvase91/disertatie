@@ -77,6 +77,7 @@ public class DBOperations {
 		int lastIdExp = 0, lastIdDest = 0, lastIdComanda = 0, result = 0;
 		String lastID = "select last_insert_id()";
 		String checkClient = "select * from client where client_nume = ? and client_judet = ? and client_localitate = ? and client_adresa = ?";
+		String updateTelEmailIfExists ="update client set client_telefon = ?, client_email = ? where client_id = ?";
 		String insertExp = "insert into client values(NULL, ?, ?, ?, ?, ?, ?)";
 		String insertDest = "insert into client values(NULL, ?, ?, ?, ?, ?, ?)";
 		String insertComanda = "insert into comanda(comanda_id, comanda_nr_colete, comanda_greutate, comanda_data_comanda, comanda_observatii, comanda_exp_id, comanda_dest_id) values (NULL, ?, ?, CURDATE(), ? , ?, ?)";
@@ -122,6 +123,11 @@ public class DBOperations {
 						lastIdExp = rs.getInt(1);
 					}
 				}
+			} else {
+				pst = currentConnection.prepareStatement(updateTelEmailIfExists);
+				pst.setString(1, comanda.getExpeditor().getTelefon());
+				pst.setString(2, comanda.getExpeditor().getEmail());
+				pst.setInt(3, lastIdExp);
 			}
 
 			if (lastIdDest == 0) {
@@ -141,6 +147,11 @@ public class DBOperations {
 						lastIdDest = rs.getInt(1);
 					}
 				}
+			} else {
+				pst = currentConnection.prepareStatement(updateTelEmailIfExists);
+				pst.setString(1, comanda.getDestinatar().getTelefon());
+				pst.setString(2, comanda.getDestinatar().getEmail());
+				pst.setInt(3, lastIdDest);
 			}
 			
 			pst = currentConnection.prepareStatement(insertComanda);

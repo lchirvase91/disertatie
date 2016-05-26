@@ -45,6 +45,14 @@
     <url-pattern>/GenerareEtichetaServlet</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>VerificareColetServlet</servlet-name>
+    <servlet-class>publicSide.VerificareColetServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>VerificareColetServlet</servlet-name>
+    <url-pattern>/VerificareColetServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>GenerarePDF</servlet-name>
     <servlet-class>generareEtichetaColet.GenerarePDF</servlet-class>
   </servlet>

@@ -65,7 +65,7 @@
 		</div>
 		<div style="position: absolute; right: 10%; top: 80%;">
 			<input class="big_button" type="button" value="Verifica AWB"
-				onclick="location.href='avizier.jsp'">
+				onclick="location.href='verificareAWB.jsp'">
 		</div>
 	</div>
 	<div id="bottom_div">
