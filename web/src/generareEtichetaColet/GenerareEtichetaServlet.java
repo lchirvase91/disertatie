@@ -55,15 +55,17 @@ public class GenerareEtichetaServlet extends HttpServlet {
 		ResultSet rs1 = null, rs2 = null;
 		try {
 			conn = ConnectionManager.getConnection();
-			String select1 = "select colet_id, count(*) from colet where colet_comanda_id = ? group by colet_id";
+			String select1 = "select colet_id, count(*) from colet where colet_comanda_id = ?";
 			pst1 = conn.prepareStatement(select1);
 			pst1.setString(1, comandaId);
 			rs1 = pst1.executeQuery();
+			int i = 0;
 			while (rs1.next()) {
 				
-				String awb = String.valueOf(Calendar.getInstance().getTimeInMillis());
+				final String awb = String.valueOf(Calendar.getInstance().getTimeInMillis());
 				
-				String update1 = "update colet set colet_awb = ? where colet_id = ?";
+				
+				String update1 = "update colet set colet_awb = ? where colet_id = ? and colet_awb is null";
 				String update2 = "update colet set colet_status = 'procesat' where colet_id = ?";
 				pst2 = conn.prepareStatement(update1);
 				pst2.setString(1, awb);
@@ -75,7 +77,6 @@ public class GenerareEtichetaServlet extends HttpServlet {
 					pst2.executeUpdate();
 				}
 			}
-			
 			
 			
 			String select2 = "select colet_awb, exp.client_nume, exp.client_judet, exp.client_localitate, exp.client_adresa, exp.client_telefon, exp.client_email, dest.client_nume, dest.client_judet, dest.client_localitate, dest.client_adresa, dest.client_telefon, dest.client_email, comanda_nr_colete, comanda_greutate, comanda_observatii from client exp, client dest, comanda, colet where exp.client_id = comanda_exp_id and dest.client_id = comanda_dest_id and comanda_id = colet_comanda_id and comanda_id = ?";
