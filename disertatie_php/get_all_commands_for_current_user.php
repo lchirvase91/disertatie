@@ -19,7 +19,7 @@ if (isset($_POST['id_user_preluare']) && !empty($_POST['id_user_preluare'])) {
 	$id = $_POST['id_user_preluare'];
 
 	// get all comenzi (preluare) from comenda table
-	$result = mysql_query("SELECT DISTINCT comanda_id, client_nume, client_judet, client_localitate, client_adresa, client_telefon, comanda_nr_colete, comanda_greutate, comanda_data_comanda FROM client, comanda, colet WHERE client_id = comanda_exp_id AND comanda_id = colet_comanda_id  AND colet_awb IS NULL AND colet_status = 'nepreluat' AND comanda_asignare = $id ORDER BY comanda_data_comanda") or die(mysql_error());
+	$result = mysql_query("SELECT DISTINCT comanda_id, client_nume, client_judet, client_localitate, client_adresa, client_telefon, comanda_nr_colete, comanda_greutate, comanda_data_comanda FROM client, comanda, colet WHERE client_id = comanda_exp_id AND comanda_id = colet_comanda_id  AND colet_awb IS NULL AND colet_status = 'in curs de preluare' AND comanda_asignare = $id ORDER BY comanda_data_comanda") or die(mysql_error());
 
 	// check for empty result
 	if (!empty($result) && mysql_num_rows($result) > 0) {

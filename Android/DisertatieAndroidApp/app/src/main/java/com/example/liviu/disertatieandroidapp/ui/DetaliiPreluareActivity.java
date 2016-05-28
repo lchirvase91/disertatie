@@ -127,6 +127,7 @@ public class DetaliiPreluareActivity extends Activity {
             params.add(new BasicNameValuePair("id_preluare", mComandaBean.getId()));
             params.add(new BasicNameValuePair("datetime_preluare", DisertatieUtils
                     .getCurrentDateTime()));
+
             // getting JSON string from URL
             JSONObject json = mJParser.makeHttpRequest(url_update_status, DisertatieAppConstants
                     .POST, params);

@@ -37,10 +37,12 @@ if (isset($_POST['id_preluare']) && isset($_POST['datetime_preluare'])) {
 		} else {
 			$response["success"] = 0;
 			$response["message"] = "Actualizare nereusita";
+			echo json_encode($response);
 		}
 	} else {
-			$response["success"] = 0;
-			$response["message"] = "Actualizare nereusita";
+		$response["success"] = 0;
+		$response["message"] = "Actualizare nereusita";
+		echo json_encode($response);
 	}
 	 
 } else {

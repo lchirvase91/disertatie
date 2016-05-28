@@ -37,10 +37,12 @@ if (isset($_POST['id_livrare']) && isset($_POST['datetime_livrare'])) {
 		} else {
 			$response["success"] = 0;
 			$response["message"] = "Actualizare nereusita";
+			echo json_encode($response);
 		}
 	} else {
 			$response["success"] = 0;
 			$response["message"] = "Actualizare nereusita";
+			echo json_encode($response);
 	}
 } else {
     // required field is missing

@@ -32,7 +32,7 @@
 <body onload="hideDisplay()">
 <%
 Connection conn = null;
-PreparedStatement pst1 = null, pst2 = null;
+PreparedStatement pst1 = null, pst2 = null, pst3 = null;
 ResultSet rs1 = null, rs2 = null;
 
 %>

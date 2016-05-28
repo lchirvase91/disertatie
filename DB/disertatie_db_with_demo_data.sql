@@ -32,7 +32,7 @@ CREATE TABLE `client` (
   `client_judet` varchar(30) NOT NULL,
   `client_localitate` varchar(30) NOT NULL,
   `client_adresa` varchar(100) NOT NULL,
-  `client_telefon` varchar(10) DEFAULT NULL,
+  `client_telefon` varchar(10) NOT NULL,
   `client_email` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

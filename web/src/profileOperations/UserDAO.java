@@ -16,7 +16,7 @@ public class UserDAO {
 		String userName = bean.getUsername();
 		String userPassword = bean.getPassword();
 
-		searchQuery = "select * from user where user_userlog_id = (select userlog_id FROM userlog WHERE userlog_username = ? AND userlog_password = ?)"; 
+		searchQuery = "select * from user where user_userlog_id = (select userlog_id FROM userlog WHERE userlog_username = ? AND userlog_password = ?) and user_statut='operator'"; 
 		
 		System.out.println("Before getting connection your given user name is: " + userName);
 		System.out.println("Before getting connection your given user password is: " + userPassword);
