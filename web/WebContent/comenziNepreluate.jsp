@@ -5,15 +5,16 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*"%>
 
-<table align="center" text-align="center" border="1">
+
+<table class="common_table">
 	<tr>
-		<th colspan=4>Lista comenzi nepreluate</th>
+		<th colspan=5>Lista comenzi nepreluate</th>
 	</tr>
 	<tr>
 		<th>Id comanda</th>
 		<th>Numar colete</th>
 		<th>Data comanda</th>
-		<th>Asignare</th>
+		<th colspan=2>Asignare</th>
 	</tr>
 	<%
 		try {

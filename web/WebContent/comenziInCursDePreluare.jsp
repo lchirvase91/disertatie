@@ -5,7 +5,7 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*"%>
 
-<table align="center" text-align="center" border="1">
+<table class="common_table">
 	<tr>
 		<th colspan=4>Lista comenzi in curs de preluare</th>
 	</tr>

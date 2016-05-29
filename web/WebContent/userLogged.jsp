@@ -15,8 +15,7 @@
 <link href="css/ui-lightness/jquery-ui-1.10.4.css" rel="stylesheet">
 <link href="css/disertatie_style.css" rel="stylesheet" type="text/css" />
 <link href='css/styles.css' rel='stylesheet' type='text/css' />
-<link href='css/table-general.css' rel='stylesheet' type='text/css' />
-<link href='css/table-column-options.css' rel='stylesheet' type='text/css' />
+<link href='css/table.css' rel='stylesheet' type='text/css' />
 <script src="js/jquery.1.10.2.min.js"></script>
 <script src="js/jquery-ui-1.10.4.min.js"></script>
 <script>

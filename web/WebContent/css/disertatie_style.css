@@ -20,13 +20,13 @@ body {
 #header_left_title {
 	position: absolute;
 	top: 2%;
-	left: 35%;
+	left: 30%;
 }
 
 #header_right_title {
 	position: absolute;
 	top: 2%;
-	right: 35%;
+	right: 30%;
 }
 
 #middle_div {
@@ -56,9 +56,9 @@ body {
 	position: relative;
 }
 
-.profil_public {
+.profil_public_comanda {
 	width: 500px;
-	height: 800px;
+	height: 900px;
 	margin: 0 auto;
 	color: #FFFFFF;
 	background: #1f1f1f;
@@ -72,7 +72,7 @@ body {
 
 .profil_public_awb {
 	width: 500px;
-	height: 400px;
+	height: 200px;
 	margin: 0 auto;
 	color: #FFFFFF;
 	background: #1f1f1f;
@@ -86,7 +86,7 @@ body {
 
 .profil_privat {
 	width: 300px;
-	height: 210px;
+	height: 270px;
 	margin: 0 auto;
 	color: #FFFFFF;
 	background: #1f1f1f;

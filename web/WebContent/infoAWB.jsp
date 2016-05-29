@@ -2,6 +2,8 @@
 <%@ page import="dbConnection.*"%>
 <%@ page import="javaBeans.*"%>
 <%@ page import="java.sql.*"%>
+<link href="css/disertatie_style.css" rel="stylesheet" type="text/css" />
+<link href='css/styles.css' rel='stylesheet' type='text/css' />
 
 <%
 	String awb = request.getParameter("awb");
@@ -10,10 +12,6 @@
 	Connection conn = null;
 	PreparedStatement pst = null;
 	ResultSet rs = null;
-
-	awb = request.getParameter("search_awb");
-
-	System.out.println("WWWWWWWWWWWWWWW ---777777--- " + awb);
 
 	String searchQuery = "select * from colet, comanda where colet_comanda_id = comanda_id and colet_awb = ?";
 
@@ -28,9 +26,6 @@
 			status = rs.getString("colet_status");
 		}
 		
-		System.out.println("WWWWWWWWWWWWWWW ---888--- " + dataComanda);
-		System.out.println("WWWWWWWWWWWWWWW ---8888888--- " + status);
-
 	} catch (SQLException e) {
 		e.printStackTrace();
 	} finally {

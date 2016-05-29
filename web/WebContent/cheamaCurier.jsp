@@ -14,7 +14,7 @@
 			id="header_right_title" src="images/curier_image.png" />
 	</div>
 	<div id="middle_div">
-		<div class="profil_public" align="center">
+		<div class="profil_public_comanda" align="center">
 			<form name="CheamaCurierForm" action="CheamaCurierServlet"
 				method="post">
 				<table>
