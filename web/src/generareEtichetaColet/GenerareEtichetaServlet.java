@@ -55,15 +55,13 @@ public class GenerareEtichetaServlet extends HttpServlet {
 		ResultSet rs1 = null, rs2 = null;
 		try {
 			conn = ConnectionManager.getConnection();
-			String select1 = "select colet_id, count(*) from colet where colet_comanda_id = ?";
+			String select1 = "select colet_id, count(*) from colet where colet_comanda_id = ? group by colet_id";
 			pst1 = conn.prepareStatement(select1);
 			pst1.setString(1, comandaId);
 			rs1 = pst1.executeQuery();
-			int i = 0;
 			while (rs1.next()) {
 				
 				final String awb = String.valueOf(Calendar.getInstance().getTimeInMillis());
-				
 				
 				String update1 = "update colet set colet_awb = ? where colet_id = ? and colet_awb is null";
 				String update2 = "update colet set colet_status = 'procesat' where colet_id = ?";

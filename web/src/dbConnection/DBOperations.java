@@ -105,7 +105,7 @@ public class DBOperations {
 			if (rs.next()) {
 				lastIdDest = rs.getInt("client_id");
 			}
-
+			
 			if (lastIdExp == 0) {
 				pst = currentConnection.prepareStatement(insertExp);
 				pst.setString(1, comanda.getExpeditor().getNume());
@@ -124,10 +124,12 @@ public class DBOperations {
 					}
 				}
 			} else {
+				
 				pst = currentConnection.prepareStatement(updateTelEmailIfExists);
 				pst.setString(1, comanda.getExpeditor().getTelefon());
 				pst.setString(2, comanda.getExpeditor().getEmail());
 				pst.setInt(3, lastIdExp);
+				pst.executeUpdate();
 			}
 
 			if (lastIdDest == 0) {
@@ -148,10 +150,12 @@ public class DBOperations {
 					}
 				}
 			} else {
+				
 				pst = currentConnection.prepareStatement(updateTelEmailIfExists);
 				pst.setString(1, comanda.getDestinatar().getTelefon());
 				pst.setString(2, comanda.getDestinatar().getEmail());
 				pst.setInt(3, lastIdDest);
+				pst.executeUpdate();
 			}
 			
 			pst = currentConnection.prepareStatement(insertComanda);
