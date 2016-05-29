@@ -42,8 +42,8 @@ CREATE TABLE `client` (
 
 INSERT INTO `client` (`client_id`, `client_nume`, `client_judet`, `client_localitate`, `client_adresa`, `client_telefon`, `client_email`) VALUES
 (1, 'Popescu Vasile', 'Galati', 'Galati', 'aaa', '111', NULL),
-(2, 'Ionescu Claudiu', 'Bucuresti', 'Bucuresti', 'bbb', '222', NULL),
-(3, 'Popa', 'Florin', 'Braila', 'ccc', '333', NULL);
+(2, 'Ionescu Claudiu', 'Ilfov', 'Bucuresti', 'bbb', '222', NULL),
+(3, 'Popa Florin', 'Braila', 'Braila', 'ccc', '333', NULL);
 
 -- --------------------------------------------------------
 
@@ -81,7 +81,6 @@ CREATE TABLE `comanda` (
   `comanda_id` int(11) NOT NULL,
   `comanda_nr_colete` int(11) NOT NULL,
   `comanda_greutate` int(11) NOT NULL,
-  `comanda_plata` varchar(30) NOT NULL,
   `comanda_data_comanda` date NOT NULL,
   `comanda_data_preluare` datetime DEFAULT NULL,
   `comanda_data_expediere` datetime DEFAULT NULL,
@@ -96,12 +95,12 @@ CREATE TABLE `comanda` (
 -- Dumping data for table `comanda`
 --
 
-INSERT INTO `comanda` (`comanda_id`, `comanda_nr_colete`, `comanda_greutate`, `comanda_plata`, `comanda_data_comanda`, `comanda_data_preluare`, `comanda_data_expediere`, `comanda_data_livrare`, `comanda_observatii`, `comanda_asignare`, `comanda_exp_id`, `comanda_dest_id`) VALUES
-(1, 1, 2, 'ramburs', '2016-05-20', NULL, NULL, NULL, NULL, NULL, 1, 2),
-(2, 3, 7, 'online', '2016-05-20', NULL, NULL, NULL, NULL, NULL, 2, 1),
-(3, 1, 5, 'online', '2016-05-20', NULL, NULL, NULL, NULL, NULL, 1, 2),
-(4, 1, 1, 'ramburs', '2016-05-20', NULL, NULL, NULL, NULL, NULL, 1, 3),
-(5, 2, 4, 'ramburs', '2016-05-20', NULL, NULL, NULL, NULL, NULL, 3, 1);
+INSERT INTO `comanda` (`comanda_id`, `comanda_nr_colete`, `comanda_greutate`, `comanda_data_comanda`, `comanda_data_preluare`, `comanda_data_expediere`, `comanda_data_livrare`, `comanda_observatii`, `comanda_asignare`, `comanda_exp_id`, `comanda_dest_id`) VALUES
+(1, 1, 2, '2016-05-20', NULL, NULL, NULL, NULL, NULL, 1, 2),
+(2, 3, 7, '2016-05-20', NULL, NULL, NULL, NULL, NULL, 2, 1),
+(3, 1, 5, '2016-05-20', NULL, NULL, NULL, NULL, NULL, 1, 2),
+(4, 1, 1, '2016-05-20', NULL, NULL, NULL, NULL, NULL, 1, 3),
+(5, 2, 4, '2016-05-20', NULL, NULL, NULL, NULL, NULL, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -125,7 +124,7 @@ CREATE TABLE `hub` (
 INSERT INTO `hub` (`hub_id`, `hub_judet`, `hub_localitate`, `hub_adresa`, `hub_telefon`, `hub_email`) VALUES
 (1, 'Galati', 'Galati', 'aaaaa', '11111', NULL),
 (2, 'Braila', 'Braila', 'bbbbb', '22222', NULL),
-(3, 'Bucuresti', 'Bucuresti', 'ccccc', '33333', NULL);
+(3, 'Ilfov', 'Bucuresti', 'ccccc', '33333', NULL);
 
 -- --------------------------------------------------------
 

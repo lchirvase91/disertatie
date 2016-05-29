@@ -30,7 +30,7 @@ public class CheamaCurierServlet extends HttpServlet {
 		judet_exp = request.getParameter("judet_exp");
 		loc_exp = request.getParameter("loc_exp");
 		adresa_exp = request.getParameter("adresa_exp");
-		tel_exp = request.getParameter("tel_exp");
+		tel_exp = request.getParameter("telefon_exp");
 		email_exp = request.getParameter("email_exp");
 		
 		expeditor = new ClientBean(nume_exp, judet_exp, loc_exp, adresa_exp, tel_exp, email_exp);
@@ -39,7 +39,7 @@ public class CheamaCurierServlet extends HttpServlet {
 		judet_dest = request.getParameter("judet_dest");
 		loc_dest = request.getParameter("loc_dest");
 		adresa_dest = request.getParameter("adresa_dest");
-		tel_dest = request.getParameter("tel_dest");
+		tel_dest = request.getParameter("telefon_dest");
 		email_dest = request.getParameter("email_dest");
 		
 		destinatar = new ClientBean(nume_dest, judet_dest, loc_dest, adresa_dest, tel_dest, email_dest);
