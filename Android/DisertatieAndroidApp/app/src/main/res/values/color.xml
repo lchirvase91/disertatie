@@ -2,5 +2,6 @@
 <resources>
 
     <color name="black">#000000</color>
+    <color name="disabled">#848482</color>
 
 </resources>

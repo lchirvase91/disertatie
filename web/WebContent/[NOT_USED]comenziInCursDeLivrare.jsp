@@ -5,26 +5,25 @@
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*"%>
 
-<div id="comenzi_nepreluate">
+<div id="comenzi_in_curs_de_livrare">
 	<table class="common_table">
 		<tr>
-			<th colspan=5>Lista comenzi nepreluate</th>
+			<th colspan=4>Lista comenzi in curs de livrare</th>
 		</tr>
 		<tr>
 			<th>Id comanda</th>
 			<th>Numar colete</th>
 			<th>Data comanda</th>
-			<th colspan=2>Asignare</th>
+			<th>Asignare</th>
 		</tr>
 		<%
 			try {
 				conn = ConnectionManager.getConnection();
-				String comenzi = "select distinct comanda_id, comanda_nr_colete, comanda_data_comanda from client, comanda, colet where client_id = comanda_exp_id and comanda_id = colet_comanda_id  and colet_awb is null and colet_status = 'nepreluat' and comanda_asignare is null and client_judet = (select hub_judet from hub where hub_id = (select user_hub_id from user where user_userlog_id = ?)) order by comanda_data_comanda, comanda_id";
+				String comenzi = "select distinct comanda_id, comanda_nr_colete, comanda_data_comanda from client, comanda, colet where client_id = comanda_dest_id and comanda_id = colet_comanda_id  and colet_awb is not null and colet_status = 'in curs de livrare' and comanda_asignare not in (select user_id from user where user_hub_id = (select user_hub_id from user where user_userlog_id = ?)) and client_judet = (select hub_judet from hub where hub_id = (select user_hub_id from user where user_userlog_id = ?)) order by comanda_data_comanda";
 				String curieri = "select user_id, user_nume, user_prenume from user where user_statut = 'curier' and user_hub_id = (select user_hub_id from user where user_userlog_id = ?)";
 				pst1 = conn.prepareStatement(comenzi);
-
-				System.out.println(currentUser.getUid());
 				pst1.setString(1, currentUser.getUid());
+				pst1.setString(2, currentUser.getUid());
 				rs1 = pst1.executeQuery();
 
 				while (rs1.next()) {
@@ -33,8 +32,8 @@
 			<td><%=rs1.getString("comanda_id")%></td>
 			<td><%=rs1.getString("comanda_nr_colete")%></td>
 			<td><%=rs1.getDate("comanda_data_comanda")%></td>
-			<td><select name="asignare"
-				id="asignare<%=rs1.getString("comanda_id")%>">
+			<td><select name="asignareLivrare"
+				id="asignareLivrare<%=rs1.getString("comanda_id")%>">
 					<option value="Asignare">Asignare</option>
 					<%
 						pst2 = conn.prepareStatement(curieri);
@@ -49,8 +48,8 @@
 					%>
 			</select></td>
 			<td><input class="btn" type="button" value="Asignare"
-				id="bt_Asignare"
-				onclick="callAsignareComanda('<%=rs1.getString("comanda_id")%>', asignare<%=rs1.getString("comanda_id")%>.value);"></td>
+				id="bt_AsignareLivrare"
+				onclick="callAsignareLivrare('<%=rs1.getString("comanda_id")%>', asignareLivrare<%=rs1.getString("comanda_id")%>.value);reload()"></td>
 		</tr>
 		<%
 			}
@@ -86,16 +85,16 @@
 	</table>
 </div>
 <script type="text/javascript">
-function callAsignareComanda(comanda_id, user_id) {
-	asignareComanda(comanda_id, user_id);
+function callAsignareLivrare(comanda_id, user_id) {
+	asignareLivrare(comanda_id, user_id);
 }
 
-asignareComanda = function(comanda_id, user_id) {
-	$.get("asignarePreluare.jsp", {
+asignareLivrare = function(comanda_id, user_id) {
+	$.get("asignareLivrare.jsp", {
 		comanda_id : comanda_id,
 		user_id : user_id,
 	}).done(function(data) {
-		$("#comenzi_nepreluate").html(data);
+		$("#comenzi_in_curs_de_livrare").html(data);
 	});
 };
 

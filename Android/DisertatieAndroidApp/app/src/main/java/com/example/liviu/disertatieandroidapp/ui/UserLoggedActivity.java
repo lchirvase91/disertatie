@@ -114,6 +114,13 @@ public class UserLoggedActivity extends Activity {
                 startActivity(i);
             }
         });
+
+        if ("operator".equals(mUserBean.getStatut())) {
+            comenziButton.setEnabled(false);
+            comenziButton.setBackgroundColor(getResources().getColor(R.color.disabled));
+            livrariButton.setEnabled(false);
+            livrariButton.setBackgroundColor(getResources().getColor(R.color.disabled));
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {

@@ -1,11 +1,47 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page language="java"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <%@ page import="dbConnection.*"%>
-<%@ page import="javaBeans.*"%>
 <%@ page import="java.sql.*"%>
-<%@ page import="java.util.*"%>
+<%@ page import="javaBeans.UserBean"%>
 
-<table align="center" text-align="center" border="1">
+<%
+
+	UserBean currentUser = ((UserBean) (session
+		.getAttribute("currentSessionUser")));
+
+	String comandaId = request.getParameter("comanda_id");
+	String userId = request.getParameter("user_id");
+	System.out.println(comandaId + "   " + userId);
+
+	Connection conn = null;
+	PreparedStatement pst = null, pst1 = null, pst2 = null;
+	ResultSet rs1 = null, rs2 = null;
+	try {
+		conn = ConnectionManager.getConnection();
+		String sql = "update comanda set comanda_asignare = ? where comanda_id = ?";
+		pst = conn.prepareStatement(sql);
+		pst.setString(1, userId);
+		pst.setString(2, comandaId);
+		pst.executeUpdate();
+	} catch (SQLException e) {
+		e.printStackTrace();
+	} finally {
+		try {
+			if (pst != null) {
+				pst.close();
+				pst = null;
+			}
+			if (conn != null) {
+				conn.close();
+				conn = null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+%>
+
+<table class="common_table">
 	<tr>
 		<th colspan=4>Lista comenzi in curs de livrare</th>
 	</tr>
@@ -82,20 +118,3 @@
 		}
 	%>
 </table>
-<script type="text/javascript">
-function callAsignareLivrare(comanda_id, user_id) {
-	asignareLivrare(comanda_id, user_id);
-}
-
-asignareLivrare = function(comanda_id, user_id) {
-	$.get("asignareLivrare.jsp", {
-		comanda_id : comanda_id,
-		user_id : user_id,
-	})
-};
-
-function reload() {
-    location.reload();
-}
-
-</script>
