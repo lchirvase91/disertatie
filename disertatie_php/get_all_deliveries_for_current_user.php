@@ -19,16 +19,13 @@ if (isset($_POST['id_user_livrare']) && !empty($_POST['id_user_livrare'])) {
 	$id = $_POST['id_user_livrare'];
 
 	// get all comenzi (preluare) from comenda table
-	$result = mysql_query("SELECT DISTINCT comanda_id, client_nume, client_judet, client_localitate, client_adresa, client_telefon, comanda_nr_colete, comanda_greutate, comanda_data_comanda FROM client, comanda, colet WHERE client_id = comanda_dest_id AND comanda_id = colet_comanda_id  AND colet_awb IS NOT NULL and colet_status = 'in curs de livrare' AND comanda_asignare = $id ORDER BY comanda_data_comanda") or die(mysql_error());
+	$result = mysql_query("SELECT DISTINCT comanda_id, client_nume, client_judet, client_localitate, client_adresa, client_telefon, comanda_nr_colete, comanda_greutate, comanda_data_comanda FROM client, comanda, colet WHERE client_id = comanda_dest_id AND comanda_id = colet_comanda_id  AND colet_awb IS NOT NULL and colet_status = 'in curs de livrare' AND comanda_asignare = $id ORDER BY comanda_data_comanda, comanda_id") or die(mysql_error());
 
 	// check for empty result
 	if (!empty($result) && mysql_num_rows($result) > 0) {
-		// looping through all results
-		// products node
 		$response["comenzi"] = array();
 		
 		while ($row = mysql_fetch_array($result)) {
-			// temp user array
 			$comanda = array();
 			$comanda["comanda_id"] = $row["comanda_id"];
 			$comanda["client_nume"] = $row["client_nume"];
@@ -40,7 +37,6 @@ if (isset($_POST['id_user_livrare']) && !empty($_POST['id_user_livrare'])) {
 			$comanda["greutate"] = $row["comanda_greutate"];
 			$comanda["data_comanda"] = $row["comanda_data_comanda"];
 
-			// push single product into final response array
 			array_push($response["comenzi"], $comanda);
 		}
 		// success
