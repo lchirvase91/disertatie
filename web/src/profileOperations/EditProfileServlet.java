@@ -24,14 +24,18 @@ public class EditProfileServlet extends HttpServlet {
 		String confirmareParolaNoua;
 		
 		HttpSession session = request.getSession(true);
-		UserBean currentUser = (UserBean) (session
-				.getAttribute("currentSessionUser"));
-		parolaCurenta = request.getParameter("current_psw");
-		parolaNoua = request.getParameter("new_psw");
-		confirmareParolaNoua = request.getParameter("confirm_new_psw");
-		DBOperations.editProfile(currentUser, parolaCurenta, parolaNoua,
-				confirmareParolaNoua);
-		response.sendRedirect("userLogged.jsp");
-		
+		if (session != null) {
+			UserBean currentUser = (UserBean) (session
+					.getAttribute("currentSessionUser"));
+			parolaCurenta = request.getParameter("current_psw");
+			parolaNoua = request.getParameter("new_psw");
+			confirmareParolaNoua = request.getParameter("confirm_new_psw");
+			DBOperations.editProfile(currentUser, parolaCurenta, parolaNoua,
+					confirmareParolaNoua);
+			response.sendRedirect("userLogged.jsp");
+		} else {
+			response.sendRedirect("index.jsp");
+		}
+
 	}
 }

@@ -3,7 +3,12 @@
 <%@ page import="java.sql.*"%>
 <%
 	UserBean currentUser = ((UserBean) (session
-			.getAttribute("currentSessionUser")));
+	.getAttribute("currentSessionUser")));
+
+	if (request.getRequestedSessionId() != null
+			&& !request.isRequestedSessionIdValid()) {
+		response.sendRedirect("index.jsp");
+	}
 %>
 <!DOCTYPE html>
 <html>

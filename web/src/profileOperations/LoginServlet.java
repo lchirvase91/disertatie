@@ -20,6 +20,10 @@ public class LoginServlet extends HttpServlet {
 
 		if (user.isValid()) {
 			HttpSession session = request.getSession(true);
+			if(session == null) {
+				response.sendRedirect("index.jsp");
+				return;
+			}
 			session.setAttribute("currentSessionUser", user);
 			session.setAttribute("currentConnection", UserDAO.currentConnection);
 			response.sendRedirect("userLogged.jsp");

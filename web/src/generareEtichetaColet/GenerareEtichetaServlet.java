@@ -5,11 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Random;
-
 import javaBeans.ClientBean;
 import javaBeans.ComandaBean;
 
@@ -94,7 +91,7 @@ public class GenerareEtichetaServlet extends HttpServlet {
 			}
 			
 
-			Document document = new Document(new Rectangle(600, 400));
+			Document document = new Document(new Rectangle(800, 600));
 			for (ComandaBean colet : listaComenzi) {
 				
 				PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
@@ -173,7 +170,7 @@ public class GenerareEtichetaServlet extends HttpServlet {
 				
 				phrase = new Phrase();
 				phrase.add(new Chunk("Greutate totala: \n\n",  FONT3));
-				phrase.add(new Chunk(colet.getGreutate(), FONT2));
+				phrase.add(new Chunk(colet.getGreutate() + " kg", FONT2));
 				cell = new PdfPCell(phrase);
 				cell.setRowspan(2);
 				table.addCell(cell);

@@ -19,11 +19,18 @@ public class LogoutServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		HttpSession session = request.getSession(true);
+		
+		if (session == null) {
+			response.sendRedirect("index.jsp");
+			return;
+		}
+		
 		UserBean currentUser = (UserBean) (session
 				.getAttribute("currentSessionUser"));
 
 		if (currentUser == null) {
 			response.sendRedirect("index.jsp");
+			return;
 		}
 		
 		if (currentUser.isValid()) {
