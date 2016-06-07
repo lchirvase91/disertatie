@@ -12,7 +12,9 @@
 	Connection conn = null;
 	PreparedStatement pst = null;
 	ResultSet rs = null;
-
+	String messageAWB = "Completati campul AWB de mai sus!";
+	String genericMessage = "Lipsa informatii!";
+	
 	String searchQuery = "select * from colet, comanda where colet_comanda_id = comanda_id and colet_awb = ?";
 
 	try {
@@ -71,7 +73,7 @@
 	<tr>
 		<td><font size="4">Numar AWB:</font></td>
 		<td><input type="text" name="nr_awb" id="nr_awb"
-			placeholder="Numar AWB" size="50" style="font-size: 15px" value="<%=awb%>">
+			placeholder="Numar AWB" size="50" style="font-size: 15px" value="<%=((awb!=null && !"".equals(awb))?awb:messageAWB)%>">
 	</tr>
 	<tr>
 		<td></td>
@@ -82,7 +84,7 @@
 	<tr>
 		<td><font size="4">Data comanda:</font></td>
 		<td><input type="text" name="data_comanda" id="data_comanda"
-			placeholder="Data comanda" size="50" style="font-size: 15px" value="<%=dataComanda%>">
+			placeholder="Data comanda" size="50" style="font-size: 15px" value="<%=((dataComanda!=null)?dataComanda:genericMessage)%>">
 	</tr>
 	<tr>
 		<td></td>
@@ -93,6 +95,6 @@
 	<tr>
 		<td><font size="4">Status:</font></td>
 		<td><input type="text" name="status" id="status"
-			placeholder="Status" size="50" style="font-size: 15px" value="<%=status%>">
+			placeholder="Status" size="50" style="font-size: 15px" value="<%=((status!=null)?status:genericMessage)%>">
 	</tr>
 </table>

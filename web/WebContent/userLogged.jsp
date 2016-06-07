@@ -23,24 +23,52 @@
 <link href='css/table.css' rel='stylesheet' type='text/css' />
 <script src="js/jquery.1.10.2.min.js"></script>
 <script src="js/jquery-ui-1.10.4.min.js"></script>
-<script>
-	function hideDisplay() {
-		$('.P').hide();
-	}
-	function includeFile(id) {
-		$('.P').hide();
-		$(id).show();
-	}
+<script type="text/javascript">
+function callLoadComenziNepreluate() {
+	loadComenziNepreluate();
+}
+loadComenziNepreluate = function() {
+	$.get("comenziNepreluate.jsp", {
+	}).done(function(data) {
+		$("#content").html(data);
+	});
+};
+
+function callLoadComenziInCursDePreluare() {
+	loadComenziInCursDePreluare();
+}
+loadComenziInCursDePreluare = function() {
+	$.get("comenziInCursDePreluare.jsp", {
+	}).done(function(data) {
+		$("#content").html(data);
+	});
+};
+
+function callLoadComenziPreluate() {
+	loadComenziPreluate();
+}
+loadComenziPreluate = function() {
+	$.get("comenziPreluate.jsp", {
+	}).done(function(data) {
+		$("#content").html(data);
+	});
+};
+
+function callChangePassword() {
+	loadChangePassword();
+}
+loadChangePassword = function() {
+	$.get("schimbareParola.jsp", {
+	}).done(function(data) {
+		$("#content").html(data);
+	});
+};
+
 </script>
+
+
 </head>
 <body onload="hideDisplay()">
-<%
-Connection conn = null;
-PreparedStatement pst1 = null, pst2 = null, pst3 = null;
-ResultSet rs1 = null, rs2 = null;
-
-%>
-
 
 	<div id='cssmenu'>
 
@@ -52,14 +80,14 @@ ResultSet rs1 = null, rs2 = null;
 			<li class='has-sub'><a href='#Comenzi'><span>Comenzi</span></a>
 				<ul>
 					<li><a href="#ComenziNepreluate"
-						onclick="includeFile('#ComenziNepreluate');"><span>Comenzi
+						onclick="callLoadComenziNepreluate()"><span>Comenzi
 								nepreluate</span></a></li>
 					<li><a href="#ComenziInCursDePreluare"
-						onclick="includeFile('#ComenziInCursDePreluare');"><span>Comenzi
+						onclick="callLoadComenziInCursDePreluare()"><span>Comenzi
 								in curs de preluare</span></a></li>
 					<li class='last'>
 					<li><a href="#ComenziPreluate"
-						onclick="includeFile('#ComenziPreluate');"><span>Comenzi
+						onclick="callLoadComenziPreluate()"><span>Comenzi
 								preluate</span></a></li>
 				</ul></li>
 				
@@ -69,18 +97,18 @@ ResultSet rs1 = null, rs2 = null;
 						(<%=currentUser.getPrenume()%> <%=currentUser.getNume()%>)</span></a>
 				<ul>
 					<li><a href='#SchimbareParola'
-						onclick="includeFile('#SchimbareParola')"><span>Schimbare
+						onclick="callChangePassword()"><span>Schimbare
 								parola</span></a></li>
 					<li class='last'><a href='LogoutServlet'><span>Iesire</span></a></li>
 				</ul></li>
 		</ul>
 	</div>
+	
+	<div id='content'>
+	</div>
 
-	<div id="SchimbareParola" class="P"><%@ include	file="schimbareParola.jsp"%></div>
-	<div id="ComenziNepreluate" class="P"><%@ include file="comenziNepreluate.jsp"%></div>
-	<div id="ComenziInCursDePreluare" class="P"><%@ include file="comenziInCursDePreluare.jsp"%></div>
-	<div id="ComenziPreluate" class="P"><%@ include file="comenziPreluate.jsp"%></div>
 
 
 </body>
 </html>
+

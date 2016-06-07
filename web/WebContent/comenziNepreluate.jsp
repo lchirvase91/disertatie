@@ -4,7 +4,15 @@
 <%@ page import="javaBeans.*"%>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*"%>
+<%
+	UserBean currentUser = ((UserBean) (session
+			.getAttribute("currentSessionUser")));
 
+	if (request.getRequestedSessionId() != null
+			&& !request.isRequestedSessionIdValid()) {
+		response.sendRedirect("index.jsp");
+	}
+%>
 <div id="comenzi_nepreluate">
 	<table class="common_table">
 		<tr>
@@ -17,6 +25,10 @@
 			<th colspan=2>Asignare</th>
 		</tr>
 		<%
+			Connection conn = null;
+			PreparedStatement pst1 = null, pst2 = null;
+			ResultSet rs = null, rs1 = null, rs2 = null;
+
 			try {
 				conn = ConnectionManager.getConnection();
 				String comenzi = "select distinct comanda_id, comanda_nr_colete, comanda_data_comanda from client, comanda, colet where client_id = comanda_exp_id and comanda_id = colet_comanda_id  and colet_awb is null and colet_status = 'nepreluat' and comanda_asignare is null and client_judet = (select hub_judet from hub where hub_id = (select user_hub_id from user where user_userlog_id = ?)) order by comanda_data_comanda, comanda_id";
@@ -38,9 +50,9 @@
 					<option value="Asignare">Asignare</option>
 					<%
 						pst2 = conn.prepareStatement(curieri);
-								pst2.setString(1, currentUser.getUid());
-								rs2 = pst2.executeQuery();
-								while (rs2.next()) {
+						pst2.setString(1, currentUser.getUid());
+						rs2 = pst2.executeQuery();
+						while (rs2.next()) {
 					%>
 					<option value="<%=rs2.getString("user_id")%>"><%=rs2.getString("user_nume")%>
 						<%=rs2.getString("user_prenume")%></option>

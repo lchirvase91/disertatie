@@ -21,7 +21,7 @@
 
 	<div id="top_div">
 		<img id="header_left_title" src="images/sprint_image.png" />
-		<img id="header_title" src="images/app_icon_100.png" />
+		<a href="index.jsp"><img id="header_title" src="images/app_icon_100.png" title="Refresh Homepage!"/></a>
 		<img id="header_right_title" src="images/curier_image.png" />
 	</div>
 
