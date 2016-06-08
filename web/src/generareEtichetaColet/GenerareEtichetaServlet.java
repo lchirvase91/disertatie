@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import javaBeans.ClientBean;
 import javaBeans.ComandaBean;
+import javaBeans.UserBean;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -44,12 +46,14 @@ public class GenerareEtichetaServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
+		HttpSession session = request.getSession(true);
+		UserBean currentUser = ((UserBean) (session.getAttribute("currentSessionUser")));
 		String comandaId = request.getParameter("comanda_id");
-		
-		
+				
 		Connection conn = null;
-		PreparedStatement pst1 = null, pst2 = null, pst3 = null;
+		PreparedStatement pst1 = null, pst2 = null, pst3 = null, pst4 = null, pst5 = null;
 		ResultSet rs1 = null, rs2 = null;
+		int result1 = 0, result2 = 0;
 		try {
 			conn = ConnectionManager.getConnection();
 			String select1 = "select colet_id, count(*) from colet where colet_comanda_id = ? group by colet_id";
@@ -59,25 +63,32 @@ public class GenerareEtichetaServlet extends HttpServlet {
 			while (rs1.next()) {
 				
 				final String awb = String.valueOf(Calendar.getInstance().getTimeInMillis());
-				
+				String idColet = rs1.getString("colet_id");
 				String update1 = "update colet set colet_awb = ? where colet_id = ? and colet_awb is null";
 				String update2 = "update colet set colet_status = 'procesat' where colet_id = ?";
 				pst2 = conn.prepareStatement(update1);
 				pst2.setString(1, awb);
-				pst2.setString(2, rs1.getString("colet_id"));
-				int result = pst2.executeUpdate();
-				if (result > 0) {
-					pst2 = conn.prepareStatement(update2);
-					pst2.setString(1, rs1.getString("colet_id"));
-					pst2.executeUpdate();
+				pst2.setString(2, idColet);
+				result1 = pst2.executeUpdate();
+				if (result1 > 0) {
+					pst3 = conn.prepareStatement(update2);
+					pst3.setString(1, idColet);
+					result2 = pst3.executeUpdate();
+				}
+				if (result1 > 0 && result2 > 0) {
+					String insert = "insert into operare values(null, ?, ?, NOW())";
+					pst4 = conn.prepareStatement(insert);
+					pst4.setString(1, currentUser.getUid());
+					pst4.setString(2, idColet);
+					pst4.executeUpdate();
 				}
 			}
 			
 			
 			String select2 = "select colet_awb, exp.client_nume, exp.client_judet, exp.client_localitate, exp.client_adresa, exp.client_telefon, exp.client_email, dest.client_nume, dest.client_judet, dest.client_localitate, dest.client_adresa, dest.client_telefon, dest.client_email, comanda_nr_colete, comanda_greutate, comanda_observatii from client exp, client dest, comanda, colet where exp.client_id = comanda_exp_id and dest.client_id = comanda_dest_id and comanda_id = colet_comanda_id and comanda_id = ?";
-			pst3 = conn.prepareStatement(select2);
-			pst3.setString(1, comandaId);
-			rs2 = pst3.executeQuery();
+			pst5 = conn.prepareStatement(select2);
+			pst5.setString(1, comandaId);
+			rs2 = pst5.executeQuery();
 			ClientBean exp = null;
 			ClientBean dest = null;
 			ComandaBean comanda = null;
@@ -260,6 +271,14 @@ public class GenerareEtichetaServlet extends HttpServlet {
 			if (pst3 != null) {
 				pst3.close();
 				pst3 = null;
+			}
+			if (pst4 != null) {
+				pst4.close();
+				pst4 = null;
+			}
+			if (pst5 != null) {
+				pst5.close();
+				pst5 = null;
 			}
 			if (conn != null) {
 					conn.close();
