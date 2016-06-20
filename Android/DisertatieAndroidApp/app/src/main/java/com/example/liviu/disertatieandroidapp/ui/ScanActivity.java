@@ -34,6 +34,8 @@ public class ScanActivity extends Activity {
     // url
     private static String url_update_colet = DisertatieAppConstants.DYNAMIC_URL + "update_colet" +
             ".php";
+    private static String url_check_for_update_colet = DisertatieAppConstants.DYNAMIC_URL +
+            "check_for_update_colet.php";
 
     // UI
     private TextView mIdTxt, mAWBTxt, mStatusTxt;
@@ -78,6 +80,8 @@ public class ScanActivity extends Activity {
                     .show();
         }
 
+        // Loading user in Background Thread; check for update button status
+        new CheckForUpdateColetAsyncTask().execute();
 
         mUpdateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +92,87 @@ public class ScanActivity extends Activity {
         });
     }
 
+    /**
+     * Background Async Task to update colet by making HTTP Request
+     */
+    class CheckForUpdateColetAsyncTask extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgDialog = new ProgressDialog(ScanActivity.this);
+            mProgDialog.setMessage(getString(R.string.loading));
+            mProgDialog.setIndeterminate(false);
+            mProgDialog.setCancelable(false);
+            mProgDialog.show();
+        }
+
+        /**
+         * getting from url
+         */
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id_user", mUserBean.getId()));
+            params.add(new BasicNameValuePair("id_colet", mColetBean.getId()));
+
+            // getting JSON string from URL
+            JSONObject json = mJParser.makeHttpRequest(url_check_for_update_colet,
+                    DisertatieAppConstants.POST, params);
+
+            if (json == null) {
+                Log.e(TAG, "json object is null");
+                return "";
+            }
+            // Check your log cat for JSON reponse
+            if (DisertatieAppConstants. DEBUG) Log.d(TAG, "Display json object: " + json.toString
+                    ());
+
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt(TAG_SUCCESS);
+                final String message = json.getString(TAG_MESSAGE);
+
+                if (success == 0) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mUpdateBtn.setEnabled(false);
+                            mUpdateBtn.setBackgroundColor(getResources().getColor(R.color
+                                    .disabled));
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+
+                }
+            } catch (JSONException e) {
+                Log.e(TAG, "JSONException " + e.getMessage());
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog after getting from url
+            mProgDialog.dismiss();
+        }
+    }
     /**
      * Background Async Task to update colet by making HTTP Request
      */
