@@ -42,10 +42,17 @@ select proxi_next from proxi, hub, client exp, client dest, comanda where proxi_
 
 
 
+select distinct comanda_id, comanda_nr_colete, comanda_data_comanda, concat(user_nume, " ", user_prenume) as asignare  from client, comanda, colet, user 
+where client_id = comanda_exp_id and comanda_id = colet_comanda_id and colet_awb is null and colet_status = 'in curs de preluare' and 
+comanda_asignare = user_id and 
+client_judet = (select hub_judet from hub where hub_id = user_hub_id) order by comanda_data_comanda;
 
 
-
-
+select distinct comanda_id, comanda_nr_colete, comanda_data_comanda, concat(user_nume, " ", user_prenume) as asignare from client, comanda, colet, user where 
+client_id = comanda_exp_id and comanda_id = colet_comanda_id and colet_awb is null and colet_status = 'in curs de preluare' and 
+comanda_asignare in (select user_id from user where user_hub_id = (select user_hub_id from user where user_userlog_id = 1)) and 
+comanda_asignare = user_id and 
+client_judet = (select hub_judet from hub where hub_id = (select user_hub_id from user where user_userlog_id = 1)) order by comanda_data_comanda;
 
 
 select proxi_next from proxi where proxi_hub_id_sosire = (select hub_id from hub where hub_judet = (select client_judet  from client, comanda where client_id = comanda_dest_id and comanda_id = )) and proxi_next <> proxi_hub_id_sosire;
